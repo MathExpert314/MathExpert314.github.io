@@ -2,65 +2,122 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Brother's Age Tracker</title>
+    <title>MathExpert314</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <!-- CSS Styles -->
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #4682b4;
+            color: #fff;
+            padding: 20px 0;
             text-align: center;
-            padding-top: 50px;
-            background-color: #f0f8ff;
         }
-        .age-container {
-            display: inline-block;
+        nav {
+            display: flex;
+            justify-content: center;
+            background-color: #333;
+        }
+        nav a {
+            color: #fff;
+            padding: 14px 20px;
+            text-decoration: none;
+            text-align: center;
+        }
+        nav a:hover {
+            background-color: #575757;
+        }
+        .hero {
+            padding: 60px 20px;
+            text-align: center;
+            background-color: #fff;
+        }
+        .hero h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        .hero p {
+            font-size: 1.2em;
+            color: #555;
+        }
+        .content {
             padding: 20px;
-            border: 2px solid #4682b4;
-            border-radius: 10px;
-            background-color: #ffffff;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
         }
-        .age-container h1 {
+        .card {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin: 10px;
+            padding: 20px;
+            width: 300px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .card h3 {
+            margin-top: 0;
             color: #4682b4;
         }
-        .age {
-            font-size: 2em;
-            margin-top: 20px;
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 15px 0;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
         }
     </style>
 </head>
 <body>
 
-    <div class="age-container">
-        <h1>My Brother's Age</h1>
-        <div id="age" class="age">Loading...</div>
-    </div>
+    <header>
+        <h1>Welcome to MathExpert314</h1>
+        <p>Your go-to resource for math tutorials, projects, and more!</p>
+    </header>
 
-    <script>
-        // Replace with your brother's actual birth date and time
-        const birthDate = new Date("2022-08-22T04:00:00"); // Example: "2023-08-15T12:30:00"
+    <nav>
+        <a href="/">Home</a>
+        <a href="/projects">Projects</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+    </nav>
 
-        function updateAge() {
-            const now = new Date();
-            let diff = now - birthDate;
+    <section class="hero">
+        <h1>Master Math with Ease</h1>
+        <p>Explore tutorials, interactive tools, and projects designed to make learning math fun and effective.</p>
+    </section>
 
-            if (diff < 0) {
-                document.getElementById('age').innerText = "Birth date is in the future!";
-                return;
-            }
+    <section class="content">
+        <div class="card">
+            <h3>Tutorials</h3>
+            <p>Dive into comprehensive math tutorials covering various topics and levels.</p>
+            <a href="/tutorials">Learn More</a>
+        </div>
+        <div class="card">
+            <h3>Projects</h3>
+            <p>Check out my latest projects, including Minecraft mods and educational games.</p>
+            <a href="/projects">Explore</a>
+        </div>
+        <div class="card">
+            <h3>Blog</h3>
+            <p>Read articles on math concepts, programming tips, and more.</p>
+            <a href="/blog">Visit Blog</a>
+        </div>
+    </section>
 
-            const seconds = Math.floor((diff / 1000) % 60);
-            const minutes = Math.floor((diff / (1000 * 60)) % 60);
-            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-
-            document.getElementById('age').innerText = 
-                `${days} Days, ${hours} Hours, ${minutes} Minutes, ${seconds} Seconds`;
-        }
-
-        // Update the age immediately and then every second
-        updateAge();
-        setInterval(updateAge, 1000);
-    </script>
+    <footer>
+        &copy; 2024 MathExpert314. All rights reserved.
+    </footer>
 
 </body>
 </html>
