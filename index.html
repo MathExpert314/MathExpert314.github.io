@@ -11,6 +11,11 @@
             margin: 0;
             padding: 0;
             background-color: #f4f4f4;
+            transition: background-color 0.5s, color 0.5s;
+        }
+        body.dark {
+            background-color: #333;
+            color: #fff;
         }
         header {
             background-color: #4682b4;
@@ -61,6 +66,17 @@
             margin-top: 0;
             color: #4682b4;
         }
+        .toggle-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            cursor: pointer;
+            padding: 10px 15px;
+            background-color: #4682b4;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+        }
         footer {
             background-color: #333;
             color: #fff;
@@ -74,8 +90,10 @@
 </head>
 <body>
 
+    <button class="toggle-btn" onclick="toggleDarkMode()">Toggle Dark Mode</button>
+
     <header>
-        <h1>Welcome to the Oliveclub.</h1>
+        <h1>Welcome to the Oliveclub!</h1>
         <p>Your hub and club for learning and fun!</p>
     </header>
 
@@ -111,6 +129,36 @@
     <footer>
         &copy; 2024. All rights reserved.
     </footer>
+
+    <script>
+        function setCookie(name, value, days) {
+            const expires = new Date(Date.now() + days * 864e5).toUTCString();
+            document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/`;
+        }
+
+        function getCookie(name) {
+            return document.cookie.split('; ').reduce((r, v) => {
+                const parts = v.split('=');
+                return parts[0] === name ? decodeURIComponent(parts[1]) : r;
+            }, '');
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark');
+            const isDarkMode = document.body.classList.contains('dark');
+            setCookie('darkMode', isDarkMode, 30); // Save preference for 30 days
+        }
+
+        function applyDarkModePreference() {
+            const darkModeCookie = getCookie('darkMode');
+            if (darkModeCookie === 'true') {
+                document.body.classList.add('dark');
+            }
+        }
+
+        // Apply the saved preference on page load
+        applyDarkModePreference();
+    </script>
 
 </body>
 </html>
