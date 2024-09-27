@@ -26,10 +26,11 @@
             height: 500px;
             width: 100%;
             display: flex;
-            justify-content: center; /* Centering the planets */
+            justify-content: flex-start; /* Align planets to the left */
             align-items: flex-start; /* Align items to the start */
             padding-top: 10px; /* Space from the top */
             overflow: hidden; /* Hide overflow */
+            transition: transform 0.5s; /* Smooth transition for scaling */
         }
         .planet {
             border-radius: 50%;
@@ -40,7 +41,7 @@
         .planet:hover {
             transform: scale(1.1);
         }
-        /* Planet colors and sizes */
+        /* Planet colors and initial sizes */
         .mercury { background-color: #b0b0b0; width: 30px; height: 30px; }
         .venus { background-color: #e6b44e; width: 40px; height: 40px; }
         .earth { background-color: #4e8de4; width: 50px; height: 50px; }
@@ -55,20 +56,35 @@
             margin: 20px; /* Add margin for spacing */
             text-align: center;
         }
+        .toggle-button {
+            margin: 10px auto;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .toggle-button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
 
     <h1>Interactive Solar System</h1>
-    <div class="solar-system">
-        <div class="planet mercury" onclick="showInfo('Mercury')"></div>
-        <div class="planet venus" onclick="showInfo('Venus')"></div>
-        <div class="planet earth" onclick="showInfo('Earth')"></div>
-        <div class="planet mars" onclick="showInfo('Mars')"></div>
-        <div class="planet jupiter" onclick="showInfo('Jupiter')"></div>
-        <div class="planet saturn" onclick="showInfo('Saturn')"></div>
-        <div class="planet uranus" onclick="showInfo('Uranus')"></div>
-        <div class="planet neptune" onclick="showInfo('Neptune')"></div>
+    <button class="toggle-button" id="toggleButton">Toggle To Scale Mode</button>
+    <div class="solar-system" id="solarSystem">
+        <div class="planet mercury" onclick="showInfo('Mercury')" data-size="0.38"></div>
+        <div class="planet venus" onclick="showInfo('Venus')" data-size="0.95"></div>
+        <div class="planet earth" onclick="showInfo('Earth')" data-size="1.00"></div>
+        <div class="planet mars" onclick="showInfo('Mars')" data-size="0.53"></div>
+        <div class="planet jupiter" onclick="showInfo('Jupiter')" data-size="11.19"></div>
+        <div class="planet saturn" onclick="showInfo('Saturn')" data-size="9.45"></div>
+        <div class="planet uranus" onclick="showInfo('Uranus')" data-size="4.01"></div>
+        <div class="planet neptune" onclick="showInfo('Neptune')" data-size="3.88"></div>
     </div>
 
     <div class="info" id="planetInfo">
@@ -77,6 +93,32 @@
     </div>
 
     <script>
+        let scaleMode = false;
+
+        document.getElementById('toggleButton').addEventListener('click', function() {
+            scaleMode = !scaleMode;
+            const solarSystem = document.getElementById('solarSystem');
+            const planets = document.querySelectorAll('.planet');
+
+            if (scaleMode) {
+                solarSystem.style.transform = 'scale(0.1)'; // Scale down for real sizes
+                planets.forEach(planet => {
+                    const sizeFactor = parseFloat(planet.getAttribute('data-size'));
+                    const newSize = sizeFactor * 50; // Base size of Earth is 50px
+                    planet.style.width = `${newSize}px`;
+                    planet.style.height = `${newSize}px`;
+                });
+                this.textContent = 'Toggle To Normal Mode'; // Change button text
+            } else {
+                solarSystem.style.transform = 'scale(1)'; // Reset to normal size
+                planets.forEach(planet => {
+                    planet.style.width = `${planet.className.split(' ')[1] === 'earth' ? 50 : planet.getAttribute('data-size') * 50}px`;
+                    planet.style.height = `${planet.className.split(' ')[1] === 'earth' ? 50 : planet.getAttribute('data-size') * 50}px`;
+                });
+                this.textContent = 'Toggle To Scale Mode'; // Change button text back
+            }
+        });
+
         function showInfo(planet) {
             const infoDiv = document.getElementById('planetInfo');
             switch(planet) {
@@ -99,16 +141,13 @@
                     infoDiv.innerHTML = '<h2>Saturn</h2><p><strong>Diameter:</strong> 116,460 km</p><p><strong>Distance from Sun:</strong> 1.434 billion km</p><p><strong>Orbit Period:</strong> 29.46 Earth years</p><p>Known for its stunning ring system, Saturn is the sixth planet from the Sun.</p>';
                     break;
                 case 'Uranus':
-                    infoDiv.innerHTML = '<h2>Uranus</h2><p><strong>Diameter:</strong> 50,724 km</p><p><strong>Distance from Sun:</strong> 2.871 billion km</p><p><strong>Orbit Period:</strong> 84 Earth years</p><p>The seventh planet from the Sun, known for its blue color and unique rotation.</p>';
+                    infoDiv.innerHTML = '<h2>Uranus</h2><p><strong>Diameter:</strong> 50,724 km</p><p><strong>Distance from Sun:</strong> 2.871 billion km</p><p><strong>Orbit Period:</strong> 84 Earth years</p><p>The seventh planet from the Sun, Uranus is known for its blue color and unique tilt.</p>';
                     break;
                 case 'Neptune':
-                    infoDiv.innerHTML = '<h2>Neptune</h2><p><strong>Diameter:</strong> 49,244 km</p><p><strong>Distance from Sun:</strong> 4.495 billion km</p><p><strong>Orbit Period:</strong> 164.8 Earth years</p><p>The eighth planet from the Sun, known for its deep blue color.</p>';
+                    infoDiv.innerHTML = '<h2>Neptune</h2><p><strong>Diameter:</strong> 49,244 km</p><p><strong>Distance from Sun:</strong> 4.495 billion km</p><p><strong>Orbit Period:</strong> 164.8 Earth years</p><p>The eighth and farthest planet from the Sun, Neptune is known for its deep blue color.</p>';
                     break;
-                default:
-                    infoDiv.innerHTML = '<h2>Planet Information</h2><p>Select a planet to see its information.</p>';
             }
         }
     </script>
-
 </body>
 </html>
