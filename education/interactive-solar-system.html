@@ -92,7 +92,7 @@
         <div class="planet uranus" onclick="showInfo('Uranus')" data-size="4.01"></div>
         <div class="planet neptune" onclick="showInfo('Neptune')" data-size="3.88"></div>
         <div class="planet pluto" onclick="showInfo('Pluto')" data-size="0.18"></div>
-        <div class="planet haumea" onclick="showInfo('Haumea')" data-size="0.18"></div>
+        <div class="planet haumea" onclick="showInfo('Haumea')" data-size="0.13372047398 data-ishaumea=true data-width=0.18221768814"></div>
         <div class="planet makemake" onclick="showInfo('Makemake')" data-size="0.15"></div>
         <div class="planet eris" onclick="showInfo('Eris')" data-size="0.27"></div>
         <div class="planet sedna" onclick="showInfo('Sedna')" data-size="0.11"></div>
@@ -113,10 +113,26 @@
             if (scaleMode) {
                 planets.forEach(planet => {
                     const sizeFactor = parseFloat(planet.getAttribute('data-size'));
+                    const isHaumea = parseBoolean(planet.getAttribute('data-ishaumea'));
+
+                    // Calculate the new size based on the sizeFactor and base size of Earth
                     const newSize = sizeFactor * 50; // Base size of Earth is 50px
-                    planet.style.width = `${newSize}px`;
-                    planet.style.height = `${newSize}px`;
+
+                    // If it's Haumea, we might want to use specific size rules
+                    if (isHaumea) {
+                        const newWidth = parseFloat(planet.getAttribute('data-width')); // Additional width if needed
+                        const width = newWidth * 50; // You can use this for other purposes if necessary
+                        // Update size specifically for Haumea, keeping its unique aspect ratio
+                        planet.style.width = `${newWidth}px`; // Set Haumea's width specifically
+                        planet.style.height = `${newSize}px`; // Use the same height scaling as others
+                    } else {
+                        // For all other planets, apply the same scaling
+                        planet.style.width = `${newSize}px`;
+                        planet.style.height = `${newSize}px`;
+                    }
                 });
+            }
+
                 this.textContent = 'Toggle To Normal Mode'; // Change button text
             } else {
                 planets.forEach(planet => {
