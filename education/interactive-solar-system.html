@@ -106,6 +106,10 @@
     <script>
         let scaleMode = false;
 
+        function parseBoolean(value) {
+            return value === 'true';
+        }
+        
         document.getElementById('toggleButton').addEventListener('click', function() {
             scaleMode = !scaleMode;
             const planets = document.querySelectorAll('.planet');
