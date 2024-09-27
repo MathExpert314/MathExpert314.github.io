@@ -13,36 +13,29 @@
             background-color: #001f3f;
             color: #fff;
             display: flex;
+            flex-direction: column; /* Vertical layout */
+            height: 100vh; /* Full viewport height */
         }
         h1 {
             margin-top: 20px;
             text-align: center;
             width: 100%;
         }
-        .sidebar {
-            width: 300px;
-            padding: 20px;
-            background-color: rgba(0, 0, 0, 0.8);
-            position: fixed;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            overflow-y: auto;
-        }
         .solar-system {
             position: relative;
             height: 500px;
-            width: calc(100% - 300px);
-            margin-left: 300px;
+            width: 100%;
             display: flex;
+            justify-content: center; /* Centering the planets */
             align-items: flex-start; /* Align items to the start */
-            padding-left: 10px; /* Reduced space for planets */
+            padding-top: 10px; /* Space from the top */
+            overflow: hidden; /* Hide overflow */
         }
         .planet {
             border-radius: 50%;
             cursor: pointer;
             transition: transform 0.3s;
-            margin: 5px 0; /* Small margin between planets */
+            margin: 5px; /* Small margin between planets */
         }
         .planet:hover {
             transform: scale(1.1);
@@ -56,16 +49,17 @@
         .saturn { background-color: #c3b58a; width: 70px; height: 70px; }
         .uranus { background-color: #6cb6e2; width: 60px; height: 60px; }
         .neptune { background-color: #3f8cbe; width: 60px; height: 60px; }
+        .info {
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            margin: 20px; /* Add margin for spacing */
+            text-align: center;
+        }
     </style>
 </head>
 <body>
 
     <h1>Interactive Solar System</h1>
-    <div class="sidebar" id="infoSidebar">
-        <h2>Planet Information</h2>
-        <div id="planetInfo" class="info"></div>
-    </div>
-
     <div class="solar-system">
         <div class="planet mercury" onclick="showInfo('Mercury')"></div>
         <div class="planet venus" onclick="showInfo('Venus')"></div>
@@ -77,36 +71,41 @@
         <div class="planet neptune" onclick="showInfo('Neptune')"></div>
     </div>
 
+    <div class="info" id="planetInfo">
+        <h2>Planet Information</h2>
+        <p>Select a planet to see its information.</p>
+    </div>
+
     <script>
         function showInfo(planet) {
             const infoDiv = document.getElementById('planetInfo');
             switch(planet) {
                 case 'Mercury':
-                    infoDiv.innerHTML = '<h3>Mercury</h3><p><strong>Diameter:</strong> 4,880 km</p><p><strong>Distance from Sun:</strong> 57.91 million km</p><p><strong>Orbit Period:</strong> 88 Earth days</p><p>The closest planet to the Sun and the smallest planet in the Solar System.</p>';
+                    infoDiv.innerHTML = '<h2>Mercury</h2><p><strong>Diameter:</strong> 4,880 km</p><p><strong>Distance from Sun:</strong> 57.91 million km</p><p><strong>Orbit Period:</strong> 88 Earth days</p><p>The closest planet to the Sun and the smallest planet in the Solar System.</p>';
                     break;
                 case 'Venus':
-                    infoDiv.innerHTML = '<h3>Venus</h3><p><strong>Diameter:</strong> 12,104 km</p><p><strong>Distance from Sun:</strong> 108.2 million km</p><p><strong>Orbit Period:</strong> 225 Earth days</p><p>The second planet from the Sun, known for its thick, toxic atmosphere.</p>';
+                    infoDiv.innerHTML = '<h2>Venus</h2><p><strong>Diameter:</strong> 12,104 km</p><p><strong>Distance from Sun:</strong> 108.2 million km</p><p><strong>Orbit Period:</strong> 225 Earth days</p><p>The second planet from the Sun, known for its thick, toxic atmosphere.</p>';
                     break;
                 case 'Earth':
-                    infoDiv.innerHTML = '<h3>Earth</h3><p><strong>Diameter:</strong> 12,742 km</p><p><strong>Distance from Sun:</strong> 149.6 million km</p><p><strong>Orbit Period:</strong> 365.25 days</p><p>The third planet from the Sun and the only planet known to support life.</p>';
+                    infoDiv.innerHTML = '<h2>Earth</h2><p><strong>Diameter:</strong> 12,742 km</p><p><strong>Distance from Sun:</strong> 149.6 million km</p><p><strong>Orbit Period:</strong> 365.25 days</p><p>The third planet from the Sun and the only planet known to support life.</p>';
                     break;
                 case 'Mars':
-                    infoDiv.innerHTML = '<h3>Mars</h3><p><strong>Diameter:</strong> 6,779 km</p><p><strong>Distance from Sun:</strong> 227.9 million km</p><p><strong>Orbit Period:</strong> 687 Earth days</p><p>The fourth planet from the Sun, known as the Red Planet.</p>';
+                    infoDiv.innerHTML = '<h2>Mars</h2><p><strong>Diameter:</strong> 6,779 km</p><p><strong>Distance from Sun:</strong> 227.9 million km</p><p><strong>Orbit Period:</strong> 687 Earth days</p><p>The fourth planet from the Sun, known as the Red Planet.</p>';
                     break;
                 case 'Jupiter':
-                    infoDiv.innerHTML = '<h3>Jupiter</h3><p><strong>Diameter:</strong> 139,820 km</p><p><strong>Distance from Sun:</strong> 778.5 million km</p><p><strong>Orbit Period:</strong> 11.86 Earth years</p><p>The largest planet in our Solar System, famous for its Great Red Spot.</p>';
+                    infoDiv.innerHTML = '<h2>Jupiter</h2><p><strong>Diameter:</strong> 139,820 km</p><p><strong>Distance from Sun:</strong> 778.5 million km</p><p><strong>Orbit Period:</strong> 11.86 Earth years</p><p>The largest planet in our Solar System, famous for its Great Red Spot.</p>';
                     break;
                 case 'Saturn':
-                    infoDiv.innerHTML = '<h3>Saturn</h3><p><strong>Diameter:</strong> 116,460 km</p><p><strong>Distance from Sun:</strong> 1.434 billion km</p><p><strong>Orbit Period:</strong> 29.46 Earth years</p><p>Known for its stunning ring system, Saturn is the sixth planet from the Sun.</p>';
+                    infoDiv.innerHTML = '<h2>Saturn</h2><p><strong>Diameter:</strong> 116,460 km</p><p><strong>Distance from Sun:</strong> 1.434 billion km</p><p><strong>Orbit Period:</strong> 29.46 Earth years</p><p>Known for its stunning ring system, Saturn is the sixth planet from the Sun.</p>';
                     break;
                 case 'Uranus':
-                    infoDiv.innerHTML = '<h3>Uranus</h3><p><strong>Diameter:</strong> 50,724 km</p><p><strong>Distance from Sun:</strong> 2.871 billion km</p><p><strong>Orbit Period:</strong> 84 Earth years</p><p>The seventh planet from the Sun, known for its blue color and unique rotation.</p>';
+                    infoDiv.innerHTML = '<h2>Uranus</h2><p><strong>Diameter:</strong> 50,724 km</p><p><strong>Distance from Sun:</strong> 2.871 billion km</p><p><strong>Orbit Period:</strong> 84 Earth years</p><p>The seventh planet from the Sun, known for its blue color and unique rotation.</p>';
                     break;
                 case 'Neptune':
-                    infoDiv.innerHTML = '<h3>Neptune</h3><p><strong>Diameter:</strong> 49,244 km</p><p><strong>Distance from Sun:</strong> 4.495 billion km</p><p><strong>Orbit Period:</strong> 164.8 Earth years</p><p>The eighth planet from the Sun, known for its deep blue color.</p>';
+                    infoDiv.innerHTML = '<h2>Neptune</h2><p><strong>Diameter:</strong> 49,244 km</p><p><strong>Distance from Sun:</strong> 4.495 billion km</p><p><strong>Orbit Period:</strong> 164.8 Earth years</p><p>The eighth planet from the Sun, known for its deep blue color.</p>';
                     break;
                 default:
-                    infoDiv.innerHTML = '';
+                    infoDiv.innerHTML = '<h2>Planet Information</h2><p>Select a planet to see its information.</p>';
             }
         }
     </script>
