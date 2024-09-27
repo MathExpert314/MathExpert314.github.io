@@ -12,15 +12,29 @@
             padding: 0;
             background-color: #001f3f;
             color: #fff;
-            text-align: center;
+            display: flex;
         }
         h1 {
             margin-top: 20px;
+            text-align: center;
+            width: 100%;
+        }
+        .sidebar {
+            width: 300px;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.8);
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            overflow-y: auto;
+            transition: transform 0.3s;
         }
         .solar-system {
             position: relative;
             height: 500px;
-            width: 100%;
+            width: calc(100% - 300px);
+            margin-left: 300px;
             overflow: hidden;
         }
         .planet {
@@ -31,13 +45,6 @@
         }
         .planet:hover {
             transform: scale(1.1);
-        }
-        .info {
-            display: none;
-            margin-top: 20px;
-            padding: 15px;
-            background-color: rgba(0, 0, 0, 0.7);
-            border-radius: 8px;
         }
         /* Planet colors */
         .mercury { background-color: #b0b0b0; }
@@ -53,6 +60,11 @@
 <body>
 
     <h1>Interactive Solar System</h1>
+    <div class="sidebar" id="infoSidebar">
+        <h2>Planet Information</h2>
+        <div id="planetInfo" class="info"></div>
+    </div>
+
     <div class="solar-system">
         <div class="planet mercury" style="width: 50px; height: 50px; top: 200px; left: 100px;" onclick="showInfo('Mercury')"></div>
         <div class="planet venus" style="width: 60px; height: 60px; top: 150px; left: 250px;" onclick="showInfo('Venus')"></div>
@@ -64,40 +76,37 @@
         <div class="planet neptune" style="width: 100px; height: 100px; top: 300px; left: 1150px;" onclick="showInfo('Neptune')"></div>
     </div>
 
-    <div id="planetInfo" class="info"></div>
-
     <script>
         function showInfo(planet) {
             const infoDiv = document.getElementById('planetInfo');
             switch(planet) {
                 case 'Mercury':
-                    infoDiv.innerHTML = '<h2>Mercury</h2><p>The closest planet to the Sun and the smallest planet in the Solar System.</p>';
+                    infoDiv.innerHTML = '<h3>Mercury</h3><p><strong>Diameter:</strong> 4,880 km</p><p><strong>Distance from Sun:</strong> 57.91 million km</p><p><strong>Orbit Period:</strong> 88 Earth days</p><p>The closest planet to the Sun and the smallest planet in the Solar System.</p>';
                     break;
                 case 'Venus':
-                    infoDiv.innerHTML = '<h2>Venus</h2><p>The second planet from the Sun, known for its thick, toxic atmosphere.</p>';
+                    infoDiv.innerHTML = '<h3>Venus</h3><p><strong>Diameter:</strong> 12,104 km</p><p><strong>Distance from Sun:</strong> 108.2 million km</p><p><strong>Orbit Period:</strong> 225 Earth days</p><p>The second planet from the Sun, known for its thick, toxic atmosphere.</p>';
                     break;
                 case 'Earth':
-                    infoDiv.innerHTML = '<h2>Earth</h2><p>The third planet from the Sun and the only planet known to support life.</p>';
+                    infoDiv.innerHTML = '<h3>Earth</h3><p><strong>Diameter:</strong> 12,742 km</p><p><strong>Distance from Sun:</strong> 149.6 million km</p><p><strong>Orbit Period:</strong> 365.25 days</p><p>The third planet from the Sun and the only planet known to support life.</p>';
                     break;
                 case 'Mars':
-                    infoDiv.innerHTML = '<h2>Mars</h2><p>The fourth planet from the Sun, known as the Red Planet.</p>';
+                    infoDiv.innerHTML = '<h3>Mars</h3><p><strong>Diameter:</strong> 6,779 km</p><p><strong>Distance from Sun:</strong> 227.9 million km</p><p><strong>Orbit Period:</strong> 687 Earth days</p><p>The fourth planet from the Sun, known as the Red Planet.</p>';
                     break;
                 case 'Jupiter':
-                    infoDiv.innerHTML = '<h2>Jupiter</h2><p>The largest planet in our Solar System, famous for its Great Red Spot.</p>';
+                    infoDiv.innerHTML = '<h3>Jupiter</h3><p><strong>Diameter:</strong> 139,820 km</p><p><strong>Distance from Sun:</strong> 778.5 million km</p><p><strong>Orbit Period:</strong> 11.86 Earth years</p><p>The largest planet in our Solar System, famous for its Great Red Spot.</p>';
                     break;
                 case 'Saturn':
-                    infoDiv.innerHTML = '<h2>Saturn</h2><p>Known for its stunning ring system, Saturn is the sixth planet from the Sun.</p>';
+                    infoDiv.innerHTML = '<h3>Saturn</h3><p><strong>Diameter:</strong> 116,460 km</p><p><strong>Distance from Sun:</strong> 1.434 billion km</p><p><strong>Orbit Period:</strong> 29.46 Earth years</p><p>Known for its stunning ring system, Saturn is the sixth planet from the Sun.</p>';
                     break;
                 case 'Uranus':
-                    infoDiv.innerHTML = '<h2>Uranus</h2><p>The seventh planet from the Sun, known for its blue color and unique rotation.</p>';
+                    infoDiv.innerHTML = '<h3>Uranus</h3><p><strong>Diameter:</strong> 50,724 km</p><p><strong>Distance from Sun:</strong> 2.871 billion km</p><p><strong>Orbit Period:</strong> 84 Earth years</p><p>The seventh planet from the Sun, known for its blue color and unique rotation.</p>';
                     break;
                 case 'Neptune':
-                    infoDiv.innerHTML = '<h2>Neptune</h2><p>The eighth planet from the Sun, known for its deep blue color.</p>';
+                    infoDiv.innerHTML = '<h3>Neptune</h3><p><strong>Diameter:</strong> 49,244 km</p><p><strong>Distance from Sun:</strong> 4.495 billion km</p><p><strong>Orbit Period:</strong> 164.8 Earth years</p><p>The eighth planet from the Sun, known for its deep blue color.</p>';
                     break;
                 default:
                     infoDiv.innerHTML = '';
             }
-            infoDiv.style.display = 'block';
         }
     </script>
 
