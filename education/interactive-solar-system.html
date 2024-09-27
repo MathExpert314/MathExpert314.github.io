@@ -30,12 +30,11 @@
             align-items: flex-start; /* Align items to the start */
             padding-top: 10px; /* Space from the top */
             overflow: hidden; /* Hide overflow */
-            transition: transform 0.5s; /* Smooth transition for scaling */
         }
         .planet {
             border-radius: 50%;
             cursor: pointer;
-            transition: transform 0.3s;
+            transition: width 0.5s ease, height 0.5s ease; /* Smooth transition for width and height */
             margin: 5px; /* Small margin between planets */
         }
         .planet:hover {
