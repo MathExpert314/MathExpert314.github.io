@@ -75,10 +75,31 @@
         .toggle-button:hover {
             background-color: #0056b3;
         }
+
+        #backButton {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #backButton:hover {
+            background-color: #45a049;
+        }
     </style>
 </head>
 <body>
 
+    <button id="backButton">Back to Education</button>
+
+    <script>
+        document.getElementById("backButton").addEventListener("click", function() {
+            window.location.href = "https://mathexpert314.github.io/education";
+        });
+    </script>
+    
     <h1>Interactive Solar System</h1>
     <button class="toggle-button" id="toggleButton">Toggle To Scale Mode</button>
     <div class="solar-system" id="solarSystem">
