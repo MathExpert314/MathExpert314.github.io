@@ -42,14 +42,14 @@
             transform: scale(1.1);
         }
         /* Planet colors and initial sizes */
-        .mercury { background-color: #b0b0b0; width: 30px; height: 30px; }
-        .venus { background-color: #e6b44e; width: 40px; height: 40px; }
-        .earth { background-color: #4e8de4; width: 50px; height: 50px; }
-        .mars { background-color: #c93f3f; width: 40px; height: 40px; }
-        .jupiter { background-color: #d1a27e; width: 80px; height: 80px; }
-        .saturn { background-color: #c3b58a; width: 70px; height: 70px; }
-        .uranus { background-color: #6cb6e2; width: 60px; height: 60px; }
-        .neptune { background-color: #3f8cbe; width: 60px; height: 60px; }
+        .mercury { background-color: #b0b0b0; width: 30px; height: 30px; }  /* Mercury: 30px */
+        .venus { background-color: #e6b44e; width: 40px; height: 40px; }    /* Venus: 40px */
+        .earth { background-color: #4e8de4; width: 50px; height: 50px; }    /* Earth: 50px */
+        .mars { background-color: #c93f3f; width: 40px; height: 40px; }     /* Mars: 40px */
+        .jupiter { background-color: #d1a27e; width: 80px; height: 80px; }  /* Jupiter: 80px */
+        .saturn { background-color: #c3b58a; width: 70px; height: 70px; }   /* Saturn: 70px */
+        .uranus { background-color: #6cb6e2; width: 60px; height: 60px; }   /* Uranus: 60px */
+        .neptune { background-color: #3f8cbe; width: 60px; height: 60px; }  /* Neptune: 60px */
         .info {
             background-color: rgba(0, 0, 0, 0.8);
             padding: 20px;
@@ -97,11 +97,9 @@
 
         document.getElementById('toggleButton').addEventListener('click', function() {
             scaleMode = !scaleMode;
-            const solarSystem = document.getElementById('solarSystem');
             const planets = document.querySelectorAll('.planet');
 
             if (scaleMode) {
-                solarSystem.style.transform = 'scale(0.1)'; // Scale down for real sizes
                 planets.forEach(planet => {
                     const sizeFactor = parseFloat(planet.getAttribute('data-size'));
                     const newSize = sizeFactor * 50; // Base size of Earth is 50px
@@ -110,10 +108,42 @@
                 });
                 this.textContent = 'Toggle To Normal Mode'; // Change button text
             } else {
-                solarSystem.style.transform = 'scale(1)'; // Reset to normal size
                 planets.forEach(planet => {
-                    planet.style.width = `${planet.className.split(' ')[1] === 'earth' ? 50 : planet.getAttribute('data-size') * 50}px`;
-                    planet.style.height = `${planet.className.split(' ')[1] === 'earth' ? 50 : planet.getAttribute('data-size') * 50}px`;
+                    // Reset to the initial sizes
+                    switch (planet.className.split(' ')[1]) {
+                        case 'mercury':
+                            planet.style.width = '30px';
+                            planet.style.height = '30px';
+                            break;
+                        case 'venus':
+                            planet.style.width = '40px';
+                            planet.style.height = '40px';
+                            break;
+                        case 'earth':
+                            planet.style.width = '50px';
+                            planet.style.height = '50px';
+                            break;
+                        case 'mars':
+                            planet.style.width = '40px';
+                            planet.style.height = '40px';
+                            break;
+                        case 'jupiter':
+                            planet.style.width = '80px';
+                            planet.style.height = '80px';
+                            break;
+                        case 'saturn':
+                            planet.style.width = '70px';
+                            planet.style.height = '70px';
+                            break;
+                        case 'uranus':
+                            planet.style.width = '60px';
+                            planet.style.height = '60px';
+                            break;
+                        case 'neptune':
+                            planet.style.width = '60px';
+                            planet.style.height = '60px';
+                            break;
+                    }
                 });
                 this.textContent = 'Toggle To Scale Mode'; // Change button text back
             }
@@ -138,7 +168,7 @@
                     infoDiv.innerHTML = '<h2>Jupiter</h2><p><strong>Diameter:</strong> 139,820 km</p><p><strong>Distance from Sun:</strong> 778.5 million km</p><p><strong>Orbit Period:</strong> 11.86 Earth years</p><p>The largest planet in our Solar System, famous for its Great Red Spot.</p>';
                     break;
                 case 'Saturn':
-                    infoDiv.innerHTML = '<h2>Saturn</h2><p><strong>Diameter:</strong> 116,460 km</p><p><strong>Distance from Sun:</strong> 1.434 billion km</p><p><strong>Orbit Period:</strong> 29.46 Earth years</p><p>Known for its stunning ring system, Saturn is the sixth planet from the Sun.</p>';
+                    infoDiv.innerHTML = '<h2>Saturn</h2><p><strong>Diameter:</strong> 116,460 km</p><p><strong>Distance from Sun:</strong> 1.429 billion km</p><p><strong>Orbit Period:</strong> 29.46 Earth years</p><p>The sixth planet from the Sun, known for its stunning rings.</p>';
                     break;
                 case 'Uranus':
                     infoDiv.innerHTML = '<h2>Uranus</h2><p><strong>Diameter:</strong> 50,724 km</p><p><strong>Distance from Sun:</strong> 2.871 billion km</p><p><strong>Orbit Period:</strong> 84 Earth years</p><p>The seventh planet from the Sun, Uranus is known for its blue color and unique tilt.</p>';
