@@ -49,6 +49,12 @@
         .saturn { background-color: #c3b58a; width: 70px; height: 70px; }   /* Saturn: 70px */
         .uranus { background-color: #6cb6e2; width: 60px; height: 60px; }   /* Uranus: 60px */
         .neptune { background-color: #3f8cbe; width: 60px; height: 60px; }  /* Neptune: 60px */
+        .ceres { background-color: #d0c6b6; width: 25px; height: 25px; }    /* Ceres: 25px */
+        .pluto { background-color: #a0522d; width: 20px; height: 20px; }    /* Pluto: 20px */
+        .haumea { background-color: #f5f5f5; width: 22px; height: 22px; }   /* Haumea: 22px */
+        .makemake { background-color: #b2a0c8; width: 21px; height: 21px; } /* Makemake: 21px */
+        .eris { background-color: #7d3f2a; width: 24px; height: 24px; }     /* Eris: 24px */
+        .sedna { background-color: #a0b2b5; width: 23px; height: 23px; }    /* Sedna: 23px */
         .info {
             background-color: rgba(0, 0, 0, 0.8);
             padding: 20px;
@@ -84,6 +90,12 @@
         <div class="planet saturn" onclick="showInfo('Saturn')" data-size="9.45"></div>
         <div class="planet uranus" onclick="showInfo('Uranus')" data-size="4.01"></div>
         <div class="planet neptune" onclick="showInfo('Neptune')" data-size="3.88"></div>
+        <div class="planet ceres" onclick="showInfo('Ceres')" data-size="0.09"></div>
+        <div class="planet pluto" onclick="showInfo('Pluto')" data-size="0.18"></div>
+        <div class="planet haumea" onclick="showInfo('Haumea')" data-size="0.18"></div>
+        <div class="planet makemake" onclick="showInfo('Makemake')" data-size="0.15"></div>
+        <div class="planet eris" onclick="showInfo('Eris')" data-size="0.27"></div>
+        <div class="planet sedna" onclick="showInfo('Sedna')" data-size="0.11"></div>
     </div>
 
     <div class="info" id="planetInfo">
@@ -142,29 +154,53 @@
                             planet.style.width = '60px';
                             planet.style.height = '60px';
                             break;
+                        case 'ceres':
+                            planet.style.width = '25px';
+                            planet.style.height = '25px';
+                            break;
+                        case 'pluto':
+                            planet.style.width = '20px';
+                            planet.style.height = '20px';
+                            break;
+                        case 'haumea':
+                            planet.style.width = '22px';
+                            planet.style.height = '22px';
+                            break;
+                        case 'makemake':
+                            planet.style.width = '21px';
+                            planet.style.height = '21px';
+                            break;
+                        case 'eris':
+                            planet.style.width = '24px';
+                            planet.style.height = '24px';
+                            break;
+                        case 'sedna':
+                            planet.style.width = '23px';
+                            planet.style.height = '23px';
+                            break;
                     }
                 });
                 this.textContent = 'Toggle To Scale Mode'; // Change button text back
             }
         });
 
-        function showInfo(planet) {
+        function showInfo(planetName) {
             const infoDiv = document.getElementById('planetInfo');
-            switch(planet) {
+            switch (planetName) {
                 case 'Mercury':
-                    infoDiv.innerHTML = '<h2>Mercury</h2><p><strong>Diameter:</strong> 4,880 km</p><p><strong>Distance from Sun:</strong> 57.91 million km</p><p><strong>Orbit Period:</strong> 88 Earth days</p><p>The closest planet to the Sun and the smallest planet in the Solar System.</p>';
+                    infoDiv.innerHTML = '<h2>Mercury</h2><p><strong>Diameter:</strong> 4,880 km</p><p><strong>Distance from Sun:</strong> 57.91 million km</p><p><strong>Orbit Period:</strong> 88 Earth days</p><p>The closest planet to the Sun.</p>';
                     break;
                 case 'Venus':
-                    infoDiv.innerHTML = '<h2>Venus</h2><p><strong>Diameter:</strong> 12,104 km</p><p><strong>Distance from Sun:</strong> 108.2 million km</p><p><strong>Orbit Period:</strong> 225 Earth days</p><p>The second planet from the Sun, known for its thick, toxic atmosphere.</p>';
+                    infoDiv.innerHTML = '<h2>Venus</h2><p><strong>Diameter:</strong> 12,104 km</p><p><strong>Distance from Sun:</strong> 108.2 million km</p><p><strong>Orbit Period:</strong> 225 Earth days</p><p>Known as Earth\'s twin.</p>';
                     break;
                 case 'Earth':
-                    infoDiv.innerHTML = '<h2>Earth</h2><p><strong>Diameter:</strong> 12,742 km</p><p><strong>Distance from Sun:</strong> 149.6 million km</p><p><strong>Orbit Period:</strong> 365.25 days</p><p>The third planet from the Sun and the only planet known to support life.</p>';
+                    infoDiv.innerHTML = '<h2>Earth</h2><p><strong>Diameter:</strong> 12,742 km</p><p><strong>Distance from Sun:</strong> 149.6 million km</p><p><strong>Orbit Period:</strong> 365.25 days</p><p>The only planet known to support life.</p>';
                     break;
                 case 'Mars':
-                    infoDiv.innerHTML = '<h2>Mars</h2><p><strong>Diameter:</strong> 6,779 km</p><p><strong>Distance from Sun:</strong> 227.9 million km</p><p><strong>Orbit Period:</strong> 687 Earth days</p><p>The fourth planet from the Sun, known as the Red Planet.</p>';
+                    infoDiv.innerHTML = '<h2>Mars</h2><p><strong>Diameter:</strong> 6,779 km</p><p><strong>Distance from Sun:</strong> 227.9 million km</p><p><strong>Orbit Period:</strong> 687 Earth days</p><p>Known as the Red Planet.</p>';
                     break;
                 case 'Jupiter':
-                    infoDiv.innerHTML = '<h2>Jupiter</h2><p><strong>Diameter:</strong> 139,820 km</p><p><strong>Distance from Sun:</strong> 778.5 million km</p><p><strong>Orbit Period:</strong> 11.86 Earth years</p><p>The largest planet in our Solar System, famous for its Great Red Spot.</p>';
+                    infoDiv.innerHTML = '<h2>Jupiter</h2><p><strong>Diameter:</strong> 139,820 km</p><p><strong>Distance from Sun:</strong> 778.5 million km</p><p><strong>Orbit Period:</strong> 11.86 Earth years</p><p>The largest planet in the solar system.</p>';
                     break;
                 case 'Saturn':
                     infoDiv.innerHTML = '<h2>Saturn</h2><p><strong>Diameter:</strong> 116,460 km</p><p><strong>Distance from Sun:</strong> 1.429 billion km</p><p><strong>Orbit Period:</strong> 29.46 Earth years</p><p>The sixth planet from the Sun, known for its stunning rings.</p>';
@@ -174,6 +210,24 @@
                     break;
                 case 'Neptune':
                     infoDiv.innerHTML = '<h2>Neptune</h2><p><strong>Diameter:</strong> 49,244 km</p><p><strong>Distance from Sun:</strong> 4.495 billion km</p><p><strong>Orbit Period:</strong> 164.8 Earth years</p><p>The eighth and farthest planet from the Sun, Neptune is known for its deep blue color.</p>';
+                    break;
+                case 'Ceres':
+                    infoDiv.innerHTML = '<h2>Ceres</h2><p><strong>Diameter:</strong> 940 km</p><p><strong>Distance from Sun:</strong> 413.6 million km</p><p><strong>Orbit Period:</strong> 4.60 Earth years</p><p>The largest object in the asteroid belt.</p>';
+                    break;
+                case 'Pluto':
+                    infoDiv.innerHTML = '<h2>Pluto</h2><p><strong>Diameter:</strong> 2,377 km</p><p><strong>Distance from Sun:</strong> 5.906 billion km</p><p><strong>Orbit Period:</strong> 248 Earth years</p><p>Once considered the ninth planet, now classified as a dwarf planet.</p>';
+                    break;
+                case 'Haumea':
+                    infoDiv.innerHTML = '<h2>Haumea</h2><p><strong>Diameter:</strong> 1,632 km</p><p><strong>Distance from Sun:</strong> 6.452 billion km</p><p><strong>Orbit Period:</strong> 283 Earth years</p><p>A dwarf planet known for its elongated shape and fast rotation.</p>';
+                    break;
+                case 'Makemake':
+                    infoDiv.innerHTML = '<h2>Makemake</h2><p><strong>Diameter:</strong> 1,430 km</p><p><strong>Distance from Sun:</strong> 6.850 billion km</p><p><strong>Orbit Period:</strong> 305 Earth years</p><p>A dwarf planet in the Kuiper belt.</p>';
+                    break;
+                case 'Eris':
+                    infoDiv.innerHTML = '<h2>Eris</h2><p><strong>Diameter:</strong> 2,326 km</p><p><strong>Distance from Sun:</strong> 10.1 billion km</p><p><strong>Orbit Period:</strong> 558 Earth years</p><p>A dwarf planet larger than Pluto.</p>';
+                    break;
+                case 'Sedna':
+                    infoDiv.innerHTML = '<h2>Sedna</h2><p><strong>Diameter:</strong> 1,000 km</p><p><strong>Distance from Sun:</strong> 11.4 billion km</p><p><strong>Orbit Period:</strong> 11,400 Earth years</p><p>A distant object in the solar system.</p>';
                     break;
             }
         }
