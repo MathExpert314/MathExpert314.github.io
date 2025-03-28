@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Site</title>
+</head>
+<body>
+    <h1>Welcome to My Markdown Site</h1>
+    
+    <div id="content">
+        <!-- Markdown content goes here -->
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/showdown@1.9.1/dist/showdown.min.js"></script>
+    <script>
+        var converter = new showdown.Converter();
+        var text = `# Markdown Header
+This is a **markdown** example.
+
+- Item 1
+- Item 2
+
+[Link to Google](https://www.google.com)
+
+\`\`\`
+Code block
+\`\`\``;
+        var html = converter.makeHtml(text);
+        document.getElementById('content').innerHTML = html;
+    </script>
+</body>
+</html>
