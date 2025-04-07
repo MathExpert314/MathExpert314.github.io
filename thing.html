@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Beltmatic Cheater</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #222;
+      color: #fff;
+      margin: 0;
+    }
+
+    .container {
+      text-align: center;
+      padding: 20px;
+      background-color: #333;
+      border-radius: 8px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+      width: 400px;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      color: #ff6347;
+    }
+
+    label {
+      font-weight: bold;
+      margin-top: 10px;
+      display: block;
+      color: #fff;
+    }
+
+    input[type="number"] {
+      width: 100%;
+      padding: 8px;
+      margin: 10px 0;
+      border-radius: 5px;
+      border: 1px solid #666;
+      background-color: #555;
+      color: #fff;
+    }
+
+    .operations {
+      display: flex;
+      justify-content: space-around;
+      margin: 10px 0;
+    }
+
+    .operation-btn {
+      background-color: red;
+      color: white;
+      border: none;
+      padding: 10px;
+      width: 50px;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .operation-btn.selected {
+      background-color: green;
+    }
+
+    table {
+      margin-top: 20px;
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    table, th, td {
+      border: 1px solid #444;
+    }
+
+    th, td {
+      padding: 8px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #444;
+    }
+
+    td {
+      background-color: #555;
+    }
+
+    .history {
+      margin-top: 20px;
+      max-height: 200px;
+      overflow-y: auto;
+      border-top: 2px solid #444;
+      padding-top: 10px;
+    }
+
+    .button {
+      background-color: #28a745;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Beltmatic Cheater</h1>
+
+    <label for="max">Max Number</label>
+    <input type="number" id="max" min="1" value="4" />
+
+    <label for="target">Target Number</label>
+    <input type="number" id="target" min="1" value="67" />
+
+    <div class="operations">
+      <button class="operation-btn" id="addition" onclick="toggleOperation('addition')">+</button>
+      <button class="operation-btn" id="multiplication" onclick="toggleOperation('multiplication')">*</button>
+      <button class="operation-btn" id="subtraction" onclick="toggleOperation('subtraction')">-</button>
+      <button class="operation-btn" id="division" onclick="toggleOperation('division')">/</button>
+      <button class="operation-btn" id="exponentiation" onclick="toggleOperation('exponentiation')">^</button>
+    </div>
+
+    <button class="button" onclick="findEquation()">Find Equation</button>
+
+    <div class="history" id="history">
+      <table id="historyTable">
+        <thead>
+          <tr>
+            <th>Max</th>
+            <th>Target</th>
+            <th>Operations</th>
+            <th>Equation</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    let selectedOperations = [];
+
+    function toggleOperation(operation) {
+      const button = document.getElementById(operation);
+      if (selectedOperations.includes(operation)) {
+        selectedOperations = selectedOperations.filter(op => op !== operation);
+        button.classList.remove('selected');
+      } else {
+        selectedOperations.push(operation);
+        button.classList.add('selected');
+      }
+    }
+
+    function findEquation() {
+      const max = parseInt(document.getElementById("max").value);
+      const target = parseInt(document.getElementById("target").value);
+
+      const numbers = Array.from({ length: max }, (_, i) => i + 1);
+      let equationFound = false;
+      let operations = [];
+
+      if (selectedOperations.includes("addition")) operations.push('+');
+      if (selectedOperations.includes("multiplication")) operations.push('*');
+      if (selectedOperations.includes("subtraction")) operations.push('-');
+      if (selectedOperations.includes("division")) operations.push('/');
+      if (selectedOperations.includes("exponentiation")) operations.push('^');
+
+      // BFS to find the shortest equation
+      function solve() {
+        let queue = [];
+
+        // Initialize the queue with the numbers
+        for (let num of numbers) {
+          queue.push({ value: num, equation: `${num}`, depth: 1 });
+        }
+
+        while (queue.length > 0) {
+          const { value, equation, depth } = queue.shift();
+
+          if (value === target) {
+            updateHistory(max, target, operations, equation);
+            equationFound = true;
+            break;
+          }
+
+          if (depth > 10) continue; // Limit depth to avoid excessive branching
+
+          // Try all operations on the current value
+          for (let num of numbers) {
+            for (let op of operations) {
+              let newEquation = equation + ' ' + op + ' ' + num;
+              let newResult;
+
+              switch (op) {
+                case '+':
+                  newResult = value + num;
+                  break;
+                case '-':
+                  newResult = value - num;
+                  break;
+                case '*':
+                  newResult = value * num;
+                  break;
+                case '/':
+                  if (num !== 0 && value % num === 0) newResult = value / num;
+                  else continue;
+                  break;
+                case '^':
+                  newResult = Math.pow(value, num);
+                  break;
+              }
+
+              if (newResult !== undefined) {
+                queue.push({ value: newResult, equation: newEquation, depth: depth + 1 });
+              }
+            }
+          }
+        }
+
+        if (!equationFound) updateHistory(max, target, operations, "No solution found.");
+      }
+
+      solve();
+    }
+
+    function updateHistory(max, target, operations, equation) {
+      let table = document.getElementById("historyTable").getElementsByTagName("tbody")[0];
+
+      // If more than 6 rows, remove the first row
+      if (table.rows.length >= 4) {
+        table.deleteRow(0);
+      }
+
+      // Create a new row with the equation details
+      let row = table.insertRow();
+      row.innerHTML = `
+        <td>${max}</td>
+        <td>${target}</td>
+        <td>${operations.join(', ')}</td>
+        <td>${equation}</td>
+      `;
+    }
+  </script>
+
+</body>
+</html>
