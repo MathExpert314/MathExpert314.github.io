@@ -31,12 +31,10 @@
       font-size: 1.2em;
       border-left: 5px solid yellow;
       border-right: 5px solid yellow;
-    }
-
-    canvas {
-      background-color: #111;
-      margin-top: 40px;
-      border: 6px double hotpink;
+      text-align: left;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
     }
   </style>
 </head>
@@ -53,93 +51,21 @@
   <button onclick="document.querySelector('audio').play()" style="padding: 10px; font-size: 20px; background-color: hotpink; border: none; color: white; margin-top: 20px;">
     💥 UNLEASH THE BLAST 💥
   </button>
-  
+
   <img src="godzilla_ass_blast.png" alt="Holy Ass Beam #1">
   <div class="description">
-    The First Ass Blast... it shattered buildings, eardrums, and the Geneva Convention in one go.
+    It was the summer of 198X. Tokyo shimmered in the heat, unaware of the doom squatting just beyond the horizon. As the sky turned crimson, a distant rumble echoed like a thousand snare drums made of steel. Then, with a thunderous clench, the air itself cracked. From between scales older than civilization, a column of bass-infused destruction erupted—the First Ass Blast. Windows shattered. Dogs howled. WiFi signals dropped. The blast didn’t just destroy buildings—it deleted them from Google Maps. One old monk, blind since birth, stood and said, “It has begun,” before being launched into orbit by the sheer subwoofer-like shockwave.
   </div>
 
   <img src="godzilla_ass_blast.png" alt="Holy Ass Beam #2">
   <div class="description">
-    Aimed directly at the Moon. The Moon begged for mercy. There was none.
+    The Moon had always watched Earth with a quiet, jealous patience. But when Godzilla turned his celestial posterior upward, ancient lunar instincts screamed. The Second Blast was not merely a beam—it was a message. A warning. A 300-decibel love letter of annihilation. Entire craters peeled off like wallpaper. Neil Armstrong’s footprints were replaced with a single perfect burn mark shaped like a peach emoji. Lunar orbit was altered by 3.6 degrees. Tides on Earth stopped obeying physics and instead followed the beat of the blast. Somewhere, a NASA intern screamed, “THE MOON’S RUNNING AWAY,” and he wasn’t wrong.
   </div>
 
   <img src="godzilla_ass_blast.png" alt="Holy Ass Beam #3">
   <div class="description">
-    This one split into seven sub-beams, forming the Booty Constellation. Even aliens said "bruh."
+    On the seventh day, Godzilla rested—and then stood up dramatically. With a rumble that made tectonic plates consider therapy, he prepared the Third Blast. But this one did not strike a single point. No... this was *the scatter beam*. Seven individual shock-bursts split from a single cheek and fanned out across the cosmos. They formed a pattern in the sky—what astronomers would later call "The Booty Constellation." UFOs in nearby systems turned around mid-invasion and filed complaints. Galaxies aligned. Somewhere in deep space, a council of ancient beings stared in silent awe and said only, “Bruh.”
   </div>
 
-  <!-- GODZILLA SNAKE MINIGAME -->
-  <h2 style="margin-top:50px;">🎮 Godzilla Snake Game (Booty Collector Edition :K) ((WHY IT NO WORK ;-;))</h2>
-  <canvas id="game" width="400" height="400"></canvas>
-
-  <script>
-    const canvas = document.getElementById('game');
-    const ctx = canvas.getContext('2d');
-
-    const gridSize = 20;
-    let snake = [{ x: 200, y: 200 }];
-    let dx = gridSize, dy = 0;
-    let food = spawnFood();
-    let gameOver = false;
-
-    function spawnFood() {
-      return {
-        x: Math.floor(Math.random() * (canvas.width / gridSize)) * gridSize,
-        y: Math.floor(Math.random() * (canvas.height / gridSize)) * gridSize
-      };
-    }
-
-    function drawRect(x, y, color) {
-      ctx.fillStyle = color;
-      ctx.fillRect(x, y, gridSize, gridSize);
-    }
-
-    function draw() {
-      if (gameOver) return;
-
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      // Draw food (as flaming pink block of destruction)
-      drawRect(food.x, food.y, "magenta");
-
-      // Move snake
-      const head = { x: snake[0].x + dx, y: snake[0].y + dy };
-      snake.unshift(head);
-
-      // Check for food
-      if (head.x === food.x && head.y === food.y) {
-        food = spawnFood();
-      } else {
-        snake.pop();
-      }
-
-      // Draw snake
-      for (let i = 0; i < snake.length; i++) {
-        drawRect(snake[i].x, snake[i].y, i === 0 ? "lime" : "green");
-      }
-
-      // Check for collision
-      if (
-        head.x < 0 || head.y < 0 ||
-        head.x >= canvas.width || head.y >= canvas.height ||
-        snake.slice(1).some(seg => seg.x === head.x && seg.y === head.y)
-      ) {
-        gameOver = true;
-        alert("💥 Godzilla's cheeks have collapsed the universe. Game over.");
-      }
-    }
-
-    setInterval(draw, 100);
-
-    document.addEventListener("keydown", e => {
-      switch (e.key) {
-        case "ArrowUp": if (dy === 0) { dx = 0; dy = -gridSize; } break;
-        case "ArrowDown": if (dy === 0) { dx = 0; dy = gridSize; } break;
-        case "ArrowLeft": if (dx === 0) { dx = -gridSize; dy = 0; } break;
-        case "ArrowRight": if (dx === 0) { dx = gridSize; dy = 0; } break;
-      }
-    });
-  </script>
 </body>
 </html>
