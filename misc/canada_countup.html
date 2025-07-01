@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Canada Day Countup</title>
+<style>
+  body {
+    margin: 0;
+    background: #fff;
+    color: #d32f2f;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow-x: hidden;
+    text-align: center;
+    padding: 3rem;
+    position: relative;
+  }
+  h1 {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+  }
+  #countup {
+    font-size: 2rem;
+    font-weight: bold;
+  }
+  .flag {
+    position: fixed;
+    width: 32px;
+    height: 20px;
+    user-select: none;
+    pointer-events: none;
+    animation-name: fall;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+  }
+  @keyframes fall {
+    0% {
+      transform: translateY(-50px) rotate(0deg);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(110vh) rotate(360deg);
+      opacity: 0;
+    }
+  }
+</style>
+</head>
+<body>
+
+<h1>Canada Day Countup 🇨🇦🍁</h1>
+<div id="countup">Calculating...</div>
+
+<script>
+  const startDate = new Date(Date.UTC(1867, 6 - 1, 1, 0, 0, 0)); // July 1, 1867 UTC (months 0-based)
+  const countupEl = document.getElementById('countup');
+
+  function updateCountup() {
+    const now = new Date();
+    let diff = now - startDate; // milliseconds elapsed
+
+    const msInSecond = 1000;
+    const msInMinute = msInSecond * 60;
+    const msInHour = msInMinute * 60;
+    const msInDay = msInHour * 24;
+    const msInYear = msInDay * 365.2425;
+
+    const years = Math.floor(diff / msInYear);
+    diff -= years * msInYear;
+
+    const days = Math.floor(diff / msInDay);
+    diff -= days * msInDay;
+
+    const hours = Math.floor(diff / msInHour);
+    diff -= hours * msInHour;
+
+    const minutes = Math.floor(diff / msInMinute);
+    diff -= minutes * msInMinute;
+
+    const seconds = Math.floor(diff / msInSecond);
+
+    countupEl.textContent = `${years} years, ${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`;
+  }
+
+  setInterval(updateCountup, 1000);
+  updateCountup();
+
+  // Create falling Canadian flag images
+  function createFlag() {
+    const flag = document.createElement('img');
+    flag.src = 'https://mathexpert314.github.io/assets/canada.png';
+    flag.className = 'flag';
+
+    flag.style.left = Math.random() * 100 + 'vw';
+    flag.style.animationDuration = (6 + Math.random() * 6) + 's';
+    flag.style.animationDelay = (Math.random() * 6) + 's';
+
+    document.body.appendChild(flag);
+
+    flag.addEventListener('animationend', () => {
+      flag.remove();
+    });
+  }
+
+  setInterval(createFlag, 300);
+</script>
+
+</body>
+</html>
