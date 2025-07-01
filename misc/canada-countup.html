@@ -56,30 +56,56 @@
 
   function updateCountup() {
     const now = new Date();
-    let diff = now - startDate; // milliseconds elapsed
-
+  
+    // Calculate full years difference
+    let years = now.getUTCFullYear() - startDate.getUTCFullYear();
+  
+    // Check if the current date is before the anniversary this year
+    const thisYearAnniversary = new Date(Date.UTC(
+      startDate.getUTCFullYear() + years,
+      startDate.getUTCMonth(),
+      startDate.getUTCDate(),
+      startDate.getUTCHours(),
+      startDate.getUTCMinutes(),
+      startDate.getUTCSeconds()
+    ));
+  
+    if (now < thisYearAnniversary) {
+      years -= 1; // Haven't hit anniversary yet this year
+    }
+  
+    // Get last anniversary date
+    const lastAnniversary = new Date(Date.UTC(
+      startDate.getUTCFullYear() + years,
+      startDate.getUTCMonth(),
+      startDate.getUTCDate(),
+      startDate.getUTCHours(),
+      startDate.getUTCMinutes(),
+      startDate.getUTCSeconds()
+    ));
+  
+    // Calculate the time difference since last anniversary
+    let diff = now - lastAnniversary;
+  
     const msInSecond = 1000;
     const msInMinute = msInSecond * 60;
     const msInHour = msInMinute * 60;
     const msInDay = msInHour * 24;
-    const msInYear = msInDay * 365.2425;
-
-    const years = Math.floor(diff / msInYear);
-    diff -= years * msInYear;
-
+  
     const days = Math.floor(diff / msInDay);
     diff -= days * msInDay;
-
+  
     const hours = Math.floor(diff / msInHour);
     diff -= hours * msInHour;
-
+  
     const minutes = Math.floor(diff / msInMinute);
     diff -= minutes * msInMinute;
-
+  
     const seconds = Math.floor(diff / msInSecond);
-
+  
     countupEl.textContent = `${years} years, ${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`;
   }
+
 
   setInterval(updateCountup, 1000);
   updateCountup();
