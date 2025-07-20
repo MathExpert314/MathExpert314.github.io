@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Spamton's Hyperlink Blocked Emporium</title>
+<style>
+  body {
+    margin: 0;
+    background-color: black;
+    color: white;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+  }
+
+  /* Rainbow banner across the top */
+  .rainbow-banner {
+    width: 100%;
+    padding: 15px 0;
+    background: linear-gradient(90deg, 
+      red, orange, yellow, green, blue, indigo, violet);
+    text-align: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+  }
+
+  @keyframes shake {
+      0% { transform: translate(1px, 1px) rotate(0deg); }
+      25% { transform: translate(-1px, 2px) rotate(-1deg); }
+      50% { transform: translate(-3px, 0px) rotate(1deg); }
+      75% { transform: translate(2px, 1px) rotate(0deg); }
+      100% { transform: translate(1px, -1px) rotate(-1deg); }
+    }
+
+  .shaking-text {
+    font-weight: bold;
+    font-size: 1.8rem;
+    color: white;
+    animation: shake 0.3s infinite;
+    user-select: none;
+  }
+
+  /* Add some top padding to body content so it doesn't hide under fixed banner */
+  .content {
+    padding-top: 100px;
+    text-align: center;
+  }
+
+  .deals {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.card {
+  background: linear-gradient(135deg, #ff0055 0%, #ffdd00 100%);
+  border: 3px dashed #00ff99;
+  box-shadow: 0 4px 15px rgba(255, 0, 85, 0.7);
+  border-radius: 12px;
+  width: 220px;
+  padding: 20px;
+  color: black;
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  font-weight: bold;
+  cursor: pointer;
+  user-select: none;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: scale(1.05) rotate(-2deg);
+  box-shadow: 0 8px 25px rgba(0, 255, 153, 0.8);
+}
+
+.price {
+  font-size: 1.1rem;
+  margin: 8px 0;
+  font-weight: 700;
+  color: #ccff33; /* neon-ish green for that Kromer glow */
+  text-shadow: 0 0 5px #ccff33, 0 0 10px #99cc00;
+}
+
+.kromer {
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: 900;
+  letter-spacing: 2px;
+}
+</style>
+</head>
+<body>
+
+  <div class="rainbow-banner">
+    <div class="shaking-text">SPAMTON'S [[hyperlink blocked]] EMPORIUM</div>
+  </div>
+  <div class="content">
+    <div class="deals">
+    <h2>Today's Totally Legit Deals!</h2>
+    <div class="card" onclick="alert('You have purchased: DOS Memory Upgrade for 999 Kromer!')">
+        <h3>DOS Memory Upgrade</h3>
+        <p class="price">Price: <span class="kromer">999 Kromer</span></p>
+        <p><em>Only 999,999 KB!</em></p>
+    </div>
+    <div class="card" onclick="alert('You have purchased: Hyperlink Blocker v2.0 for 0 Kromer!')">
+        <h3>Hyperlink Blocker v2.0</h3>
+        <p class="price">Price: <span class="kromer">??? Kromer</span></p>
+        <p><em>Just 3 easy payments of $1x10^100</em></p>
+    </div>
+    <div class="card" onclick="alert('You have purchased: Glitched Spamton Hat for 420 Kromer!')">
+        <h3>Glitched Spamton Hat</h3>
+        <p class="price">Price: <span class="kromer">420 Kromer</span></p>
+        <p><em>Wear it, if you dare!</em></p>
+    </div>
+    <div class="card" onclick="alert('You have purchased: Smokin\' Hot Deal for 1337 Kromer!')">
+        <h3>Smokin' Hot Deal</h3>
+        <p class="price">Price: <span class="kromer">1337 Kromer</span></p>
+        <p><em>100% definitely not a scam</em></p>
+    </div>
+    <div class="card" onclick="alert('You have purchased: F*** You The F*** Nugget!')">
+        <h3>F*** You The F*** Nugget</h3>
+        <p class="price">Price: <span class="kromer">infinite Kromer</span></p>
+        <p><em>don't buy this one</em></p>
+    </div>
+    <div class="card" onclick="alert('You have purchased: \'legit\' copy of Minecraft Java Edition!')">
+        <h3>'legit' copy of Minecraft Java Edition</h3>
+        <p class="price">Price: <span class="kromer">500 Kromer</span></p>
+        <p><em>no viruses! totally!</em></p>
+    </div>
+    <div class="card" onclick="alert('You have purchased: The secrets of the Universe!')">
+        <h3>The secrets of the Universe</h3>
+        <p class="price">Price: <span class="kromer">100 quadrillion Kromer</span></p>
+        <p><em>42 67</em></p>
+    </div>
+    <div class="card" onclick="alert('You have purchased: GAMBLING ADDICTION!')">
+        <h3>Loot box</h3>
+        <p class="price">Price: <span class="kromer">10000 Kromer</span></p>
+        <p><em>totally not something else</em></p>
+    </div>
+    </div>
+  </div>
+
+</body>
+</html>
