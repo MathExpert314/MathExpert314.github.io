@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>clikc</title>
+    <style>
+      html, body { height: 100%; margin: 0; }
+      body { display: grid; place-items: center; background: #f9fafb; }
+      button { font-size: 2rem; font-weight: bold; padding: 2rem 4rem; border: none; border-radius: 1rem; background: #3b82f6; color: white; cursor: pointer; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+      button:active { transform: translateY(2px); background: #2563eb; }
+    </style>
+  </head>
+  <body>
+    <button id="clikc">clikc</button>
+
+    <script>
+      const text = "The FitnessGram™ Pacer Test is a multistage aerobic capacity test that progressively gets more difficult as it continues. The 20 meter pacer test will begin in 30 seconds. Line up at the start. The running speed starts slowly, but gets faster each minute after you hear this signal. [beep] A single lap should be completed each time you hear this sound. [ding] Remember to run in a straight line, and run as long as possible. The second time you fail to complete a lap before the sound, your test is over. The test will begin on the word start. On your mark, get ready, start.";
+
+      function triggerDownload() {
+        const blob = new Blob([text], { type: "text/plain" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "i love you.txt";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 1500);
+      }
+
+      document.getElementById("clikc").addEventListener("click", triggerDownload);
+    </script>
+  </body>
+</html>
