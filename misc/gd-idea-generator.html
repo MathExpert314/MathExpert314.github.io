@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Random GD Level Idea</title>
+  <style>
+    :root{
+      --bg:#0f1226; --panel:#171a35; --ink:#e8eaf9; --muted:#aeb3d9; --accent:#7c5cff; --accent-2:#00e5ff;
+      --ring: 0 0 0 3px rgba(124,92,255,.35);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial;
+      color:var(--ink); background: radial-gradient(1200px 800px at 20% 10%, rgba(124,92,255,.13), transparent 60%),
+                 radial-gradient(900px 700px at 80% 90%, rgba(0,229,255,.12), transparent 60%), var(--bg);
+      display:grid; place-items:center; padding:24px;
+    }
+    .app{width:min(920px,100%);}
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:18px; box-shadow:0 10px 40px rgba(0,0,0,.4);
+      overflow:hidden;
+    }
+    header{
+      padding:20px 22px; display:flex; align-items:center; gap:12px;
+      border-bottom:1px solid rgba(255,255,255,.07);
+      background:linear-gradient(180deg, rgba(124,92,255,.1), rgba(124,92,255,0));
+    }
+    .logo{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;
+      background: conic-gradient(from 210deg, var(--accent), var(--accent-2));
+      box-shadow:0 0 0 3px rgba(255,255,255,.06), 0 10px 30px rgba(124,92,255,.35);
+      font-weight:900; color:#0b0e22; letter-spacing:.5px;
+    }
+    h1{font-size:20px; margin:0}
+    .sub{color:var(--muted); font-size:13px}
+
+    .content{padding:22px; display:grid; gap:18px}
+    .idea{
+      font-size:22px; line-height:1.35; padding:18px; border-radius:14px;
+      background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08);
+    }
+
+    .controls{display:flex; flex-wrap:wrap; gap:10px}
+    .controls button, .controls .input{
+      appearance:none; border:none; border-radius:12px; padding:12px 14px;
+      background:rgba(255,255,255,.08); color:var(--ink); cursor:pointer;
+      font-weight:600; letter-spacing:.2px;
+      border:1px solid rgba(255,255,255,.1);
+    }
+    .controls button:hover{filter:brightness(1.08)}
+    .controls button.primary{background:linear-gradient(90deg, var(--accent), var(--accent-2)); color:#0b0e22}
+    .controls button:focus{outline:none; box-shadow:var(--ring)}
+    .controls .input{cursor:text}
+
+    .row{display:flex; align-items:center; gap:12px; flex-wrap:wrap}
+    .muted{color:var(--muted)}
+
+    footer{padding:16px 22px; border-top:1px solid rgba(255,255,255,.07); display:flex; justify-content:space-between; align-items:center; gap:10px}
+    footer a{color:var(--muted); text-decoration:none}
+    footer a:hover{color:var(--ink)}
+
+    .tiny{font-size:12px}
+    .pill{border-radius:999px; padding:6px 10px; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1)}
+    .kbd{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size:12px; padding:.2em .45em; border-radius:6px; background:#0b0e22; border:1px solid rgba(255,255,255,.15)}
+
+    @media (prefers-reduced-motion:no-preference){
+      .pop{animation:pop .25s ease}
+      @keyframes pop{from{transform:scale(.98); opacity:.6} to{transform:scale(1); opacity:1}}
+    }
+  </style>
+</head>
+<body>
+  <main class="app card">
+    <header>
+      <div class="logo">GD</div>
+      <div>
+        <h1>Random GD Level Idea</h1>
+        <div class="sub">Click the button, get a wild concept. Ship it (responsibly).</div>
+      </div>
+    </header>
+    <section class="content">
+      <div id="idea" class="idea pop">Press <span class="kbd">Generate</span> to cook up a spicy idea</div>
+
+      <div class="controls">
+        <button id="btn" class="primary" title="Generate a new idea (or smash your keyboard)">Generate</button>
+        <button id="copyBtn" title="Copy the idea to your clipboard">Copy</button>
+        <button id="shareBtn" title="Share a URL with this idea embedded">Share</button>
+        <span class="input" title="Optional seed for reproducible chaos"><label for="seed" class="muted tiny">Seed</label>
+          <input id="seed" type="text" placeholder="(optional)" style="background:transparent;border:none;color:var(--ink);outline:none;width:140px;margin-left:8px">
+        </span>
+        <button id="diceBtn" title="Roll a random seed">Seed</button>
+      </div>
+
+      <div class="row tiny muted">
+        <span class="pill">Tip: press <span class="kbd">G</span> to generate</span>
+        <span class="pill">Deterministic mode: set a seed</span>
+      </div>
+    </section>
+    <footer>
+      <div class="tiny muted">Made for Geometry Dash fans. Not affiliated with RobTop. (also made by chatgpt because i'm too lazy to make this)</div>
+      <a class="tiny" href="#" id="permalink">permalink</a>
+    </footer>
+  </main>
+
+  <script>
+    // ——— Data Pools ———
+    const pools = {
+      difficulty: [
+        "Easy", "Normal", "Hard", "Harder", "Insane", "Demon", "Easy Demon", "Medium Demon", "Hard Demon", "Extreme Demon"
+      ],
+      length: ["Tiny", "Short", "Medium", "Long", "XL"],
+      gameplay: [
+        "cube-focused", "ship-heavy", "wave-control", "mixed gamemode", "duo-mode", "UFO precision", "robot timing", "spider teleport"
+      ],
+      theme: [
+        "neon cyber city", "ancient ruins", "deep space dock", "glitched circuit", "underwater lab", "volcanic temple",
+        "snowy aurora", "desert scrapyard", "pixel-art arcade", "bioluminescent cave", "retro synth grid"
+      ],
+      palette: [
+        "electric violet & cyan", "sunset orange & magenta", "mint & charcoal", "gold & obsidian", "ice blue & white",
+        "lime & purple", "amber & teal", "monochrome", "pastel rainbow", "crimson & black"
+      ],
+      speed: ["0.75x", "1x", "1.5x", "2x", "3x", "4x"],
+      gimmick: [
+        "gravity swapping", "mirror portals", "moving trigger puzzles", "darkness with light orbs", "sync-based platformer sections",
+        "dash orb choreography", "scale & rotate triggers", "block design that morphs with pulses", "late-input fakes"
+      ],
+      obstacle: [
+        "tight spike corridors", "saw gauntlets", "precision jump chains", "mini-wave tunnels", "blink platforms",
+        "teleport portals", "fake lines and traps", "swingcopter trials", "sawblade carousels"
+      ],
+      music: [
+        "chiptune", "orchestral drumstep", "lofi glitch hop", "speedcore (be gentle)", "melodic dubstep",
+        "electro swing", "synthwave", "drum & bass", "funky house", "ambient build"
+      ],
+      twist: [
+        "the level slowly builds itself as you play", "color only appears on beat hits", "every death unlocks a secret path",
+        "boss reacts to your inputs", "there's a silent coin behind a rhythm fake", "layout turns 3D mid-song",
+        "finale goes to 4x with perfect sync", "there's a memory section with fair cues", "end screen hides a mini-platformer"
+      ]
+    };
+
+    // ——— Seeded RNG (xorshift32) ———
+    function xorshift32(seed){
+      if(seed === 0) seed = 0x9e3779b9; // non-zero
+      let x = seed >>> 0;
+      return function(){
+        x ^= x << 13; x ^= x >>> 17; x ^= x << 5; return ((x >>> 0) / 4294967296);
+      }
+    }
+    function strToSeed(str){
+      if(!str) return Math.floor(Math.random()*2**31)>>>0;
+      let h = 2166136261>>>0; for(let i=0;i<str.length;i++){ h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); }
+      return h>>>0;
+    }
+
+    // ——— Generator ———
+    function pick(r, arr){ return arr[Math.floor(r()*arr.length)] }
+
+    function makeIdea(seedStr){
+      const rng = xorshift32(strToSeed(seedStr));
+      const d = pick(rng, pools.difficulty);
+      const L = pick(rng, pools.length);
+      const g = pick(rng, pools.gameplay);
+      const t = pick(rng, pools.theme);
+      const p = pick(rng, pools.palette);
+      const s = pick(rng, pools.speed);
+      const gm = pick(rng, pools.gimmick);
+      const o = pick(rng, pools.obstacle);
+      const m = pick(rng, pools.music);
+      const twist = pick(rng, pools.twist);
+
+      return `Build a ${d} ${L} ${g} level set in a ${t}, using a ${p} palette at ${s} speed. Lean into ${gm} with ${o}, synced to a ${m} track. Twist: ${twist}.`;
+    }
+
+    // ——— UI Wiring ———
+    const ideaEl = document.getElementById('idea');
+    const btn = document.getElementById('btn');
+    const copyBtn = document.getElementById('copyBtn');
+    const shareBtn = document.getElementById('shareBtn');
+    const seedInput = document.getElementById('seed');
+    const diceBtn = document.getElementById('diceBtn');
+    const permalink = document.getElementById('permalink');
+
+    function updatePermalink(text, seed){
+      const params = new URLSearchParams();
+      if(seed) params.set('seed', seed);
+      params.set('t', encodeURIComponent(text));
+      const url = location.origin + location.pathname + '?' + params.toString();
+      permalink.href = url;
+      history.replaceState({}, '', url);
+    }
+
+    function generate(){
+      const seed = seedInput.value.trim();
+      const text = makeIdea(seed || undefined);
+      ideaEl.textContent = text;
+      ideaEl.classList.remove('pop'); void ideaEl.offsetWidth; ideaEl.classList.add('pop');
+      updatePermalink(text, seed);
+    }
+
+    btn.addEventListener('click', generate);
+    diceBtn.addEventListener('click', () => { seedInput.value = Math.floor(Math.random()*1e12).toString(36); generate(); });
+    copyBtn.addEventListener('click', async ()=>{
+      try{ await navigator.clipboard.writeText(ideaEl.textContent); copyBtn.textContent='Copied!'; setTimeout(()=>copyBtn.textContent='Copy',1000);}catch{ alert('Copy failed. Your clipboard is shy.'); }
+    });
+    shareBtn.addEventListener('click', async ()=>{
+      const url = permalink.href;
+      try{ await navigator.share({ title:'GD Level Idea', text:ideaEl.textContent, url }); }
+      catch{ await navigator.clipboard.writeText(url); shareBtn.textContent='Link Copied!'; setTimeout(()=>shareBtn.textContent='Share',1000);}    
+    });
+
+    // Keyboard shortcut
+    document.addEventListener('keydown', e=>{ if(e.key.toLowerCase()==='g') generate(); });
+
+    // Load from URL if present
+    (function initFromURL(){
+      const q = new URLSearchParams(location.search);
+      const seed = q.get('seed') || '';
+      const t = q.get('t');
+      if(seed) seedInput.value = seed;
+      if(t){
+        const text = decodeURIComponent(t);
+        ideaEl.textContent = text;
+        permalink.href = location.href;
+      } else {
+        generate();
+      }
+    })();
+  </script>
+</body>
+</html>
