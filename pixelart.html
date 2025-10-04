@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Pixel Art</title>
+<meta charset="utf-8">
+<style>
+:root {
+	--current-color: #000000;
+	--pixel-hover-anim: pixel-highlight 0.6s ease-in-out 0ms infinite normal;
+	--grid-thingy: 1px solid black;
+}
+
+.tool {
+	width: 80px;
+	height: 30px;
+	font-size: 15px;
+	background-color: #555555;
+	color: white; 
+}
+
+.tool:hover {
+	background-color: #888888;
+}
+
+.tool.selected {
+	background-color: #558855;
+}
+
+.tool.selected:hover {
+	background-color: #88CC88;
+}
+
+#toolbar {
+	display: flex;
+	flex-direction: column;
+}
+
+body {
+	background-color: gray;
+	font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+#canvas {
+	width: 250px;
+	height: 250px;
+	position: relative;
+}
+
+#colors {
+	display: flex;
+	flex-wrap: wrap;
+	width: 240px;
+	height: 240px;
+}
+
+.color {
+	width: 60px;
+	height: 60px;
+	border-radius: 30px;
+	border: solid #000000 2px;
+}
+
+.color.selected {
+	border: solid #000000 5px;
+}
+
+.pixel {
+	--pixel-color: #FFFFFF;
+	border: var(--grid-thingy)
+}
+
+.pixel:hover {
+	animation: var(--pixel-hover-anim);
+}
+
+@keyframes pixel-highlight {
+	0%, 100% { 
+		background-color: var(--current-color); 
+	}
+	50%  {
+		background-color: var(--pixel-color);
+	}
+}
+</style>
+</head>
+<body>
+	<div id="canvas-size">
+		<input type="number" min="1" max="64" id="width" value="8">
+		<span style="color: white;">X</span>
+		<input type="number" min="1" max="64" id="height" value="8">
+	</div>
+	<div id="options">
+		<input type="checkbox" checked="true" id="show-grid">Show Grid</input>
+		<input type="checkbox" checked="true" id="highlight-pixel">Highlight Pixel</input>
+	</div>
+	<div id="toolbar">
+		<button id="brush" class="tool selected" data-id="0">Pencil</button>
+		<button id="eraser" class="tool" data-id="1">Eraser</button>
+		<button id="brush" class="tool" data-id="2">Bucket</button>
+	</div>
+	<div id="canvas"></div>
+	<div id="colors">
+		<button class="color" data-color="0"></button>
+		<button class="color" data-color="1"></button>
+		<button class="color" data-color="2"></button>
+		<button class="color" data-color="3"></button>
+		<button class="color" data-color="4"></button>
+		<button class="color" data-color="5"></button>
+		<button class="color" data-color="6"></button>
+		<button class="color" data-color="7"></button>
+		<button class="color" data-color="8"></button>
+		<button class="color" data-color="9"></button>
+		<button class="color" data-color="10"></button>
+		<button class="color" data-color="11"></button>
+		<button class="color" data-color="12"></button>
+		<button class="color" data-color="13"></button>
+		<button class="color" data-color="14"></button>
+		<button class="color" data-color="15"></button>
+	</div>
+</body>
+<script>
+
+const colors = [
+	"#000000",
+	"#FFFFFF",
+	"#FF0000",
+	"#00FF00",
+	"#FFFF00",
+	"#0000FF",
+	"#FF8800",
+	"#AA00AA",
+	"#884400",
+	"#888888",
+	"#880000",
+	"#008800",
+	"#000088",
+	"#BBBBBB",
+	"#FF00FF",
+	"#00BBFF"
+]
+
+let currentColor = 0;
+
+const colorButtons = document.querySelectorAll(".color");
+
+colorButtons.forEach((button) => {
+	button.style.backgroundColor = colors[button.dataset.color];
+	button.addEventListener("click", () => {
+		currentColor = button.dataset.color;
+		colorButtons.forEach((b) => { b.classList.remove("selected"); });
+		button.classList.add("selected");
+		document.documentElement.style.setProperty("--current-color", colors[currentColor])
+	});
+});
+
+const widthInput = document.getElementById("width");
+let width = 8;
+const heightInput = document.getElementById("height");
+let height = 8;
+
+let mx = 0;
+let my = 0;
+
+let pixels = [];
+
+widthInput.addEventListener("change", () => {
+	width = widthInput.valueAsNumber;
+	resizeCanvas();
+});
+
+heightInput.addEventListener("change", () => {
+	height = heightInput.valueAsNumber;
+	resizeCanvas();
+});
+
+const tools = document.querySelectorAll(".tool");
+let selectedTool = "0";
+
+tools.forEach((tool) => {
+	tool.addEventListener("click", () => {
+		setSelectedTool(tool);
+	});
+});
+
+function setSelectedTool(tool) {
+	selectedTool = tool.dataset.id;
+	tools.forEach((tool) => {
+		tool.classList.remove("selected");
+		if (tool.dataset.id == selectedTool) { tool.classList.add("selected"); }
+	});
+}
+
+let mouseDown = false;
+
+document.addEventListener("mousedown", () => {
+	mouseDown = true;
+});
+
+document.addEventListener("mouseup", () => {
+	mouseDown = false;
+});
+
+document.addEventListener("mousemove", (mousedata) => {
+	mx = mousedata.clientX;
+	my = mousedata.clientY;
+});
+
+function changePixelColour(pixel, color) {
+	pixels[pixel].style.backgroundColor = color;
+	pixels[pixel].style.setProperty("--pixel-color", color)
+}
+
+const highlight_pixel_check = document.getElementById("highlight-pixel");
+
+const pixel_highlight_anim = {
+	off: "none",
+	on: "pixel-highlight 0.6s ease-in-out 0ms infinite normal"
+};
+
+highlight_pixel_check.addEventListener("change", () => {
+	let checked = highlight_pixel_check.checked;
+	if (checked) {
+		document.documentElement.style.setProperty("--pixel-hover-anim", pixel_highlight_anim.on);
+	} else {
+		document.documentElement.style.setProperty("--pixel-hover-anim", pixel_highlight_anim.off);
+	}
+});
+
+
+const show_grid_check = document.getElementById("show-grid");
+
+const grid_border_thing = {
+	off: "none",
+	on: "1px solid black"
+};
+
+show_grid_check.addEventListener("change", () => {
+	let checked = show_grid_check.checked;
+	if (checked) {
+		document.documentElement.style.setProperty("--grid-thingy", grid_border_thing.on);
+	} else {
+		document.documentElement.style.setProperty("--grid-thingy", grid_border_thing.off);
+	}
+});
+
+
+setInterval(() => {
+	let m = Math.min(250/width, 250/height);
+	const canvX = canvas.getClientRects()[0].left;
+	const canvY = canvas.getClientRects()[0].top;
+	let pixel = Math.floor((mx - canvX) / m) + (Math.floor((my - canvY) / (m))*width);
+	if ((pixel < (width*height)) && (pixel >= 0) && (Math.floor((mx - canvX) / m) < width)) {
+		if (mouseDown) {
+			switch(selectedTool) {
+				case "0":
+				changePixelColour(pixel, colors[currentColor]);
+				break;
+				
+				case "1":
+				changePixelColour(pixel, "#FFFFFF");
+				break;
+			}
+		}
+	}
+}, 10);
+
+function resizeCanvas() {
+	pixels.forEach((pixel) => {
+		pixel.remove();
+	});
+	pixels = [];
+	for (let y = 0; y < height; y++) {
+		for (let x = 0; x < width; x++) {
+			const newPixelDiv = document.createElement("div");
+			let m = Math.min(250/width, 250/height);
+			newPixelDiv.style.width = `${m}px`;
+			newPixelDiv.style.height = `${m}px`;
+			newPixelDiv.style.position = "absolute";
+			newPixelDiv.style.left = `${x*m}px`;
+			newPixelDiv.style.top = `${y*m}px`;
+			newPixelDiv.style.backgroundColor = "#FFFFFF";
+			newPixelDiv.classList.add("pixel");
+			canvas.appendChild(newPixelDiv);
+			pixels[pixels.length] = newPixelDiv;
+		}
+	}
+}
+
+resizeCanvas();
+
+</script>
+</html>

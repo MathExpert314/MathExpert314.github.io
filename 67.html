@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>67</title>
+	<style>
+#automation {
+	position: absolute;
+	left: 350px;
+	top: 30px;
+}
+	</style>
+</head>
+<body>
+	<h1 id="sixseven-ometer">67-o-meter: 0/67</h1>
+	<h2 id="sixseven-ometer2" style="display: none;">4489-o-meter: 0/67</h2>
+	<h2 id="sixseven-ometer3" style="display: none;">300763-o-meter: 0/67</h2>
+	<button id="sixsevenbutton">67</button>
+	<button id="prestige" style="display: none;" active=false>Prestige</button>
+	<button id="superprestige" style="display: none;" active=false>Super Prestige</button>
+
+	<div id="automation">
+		<b>Automation</b>
+		<hr>
+		<button>+4 67/s<br>Cost: 2 4489s</button>
+	</div>
+	<script>
+const ss_button = document.getElementById("sixsevenbutton");
+const ss_ometer = document.getElementById("sixseven-ometer");
+const ss_ometer_2 = document.getElementById("sixseven-ometer2");
+const ss_ometer_3 = document.getElementById("sixseven-ometer3");
+const prestige_button = document.getElementById("prestige");
+const prestige_button2 = document.getElementById("superprestige");
+let prestige_unlocked = [false, false];
+let six_seven_ness = [0, 0, 0];
+
+function refresh() {
+	ss_ometer.innerHTML = `67-o-meter: ${six_seven_ness[0]}/67`;
+	ss_ometer_2.innerHTML = `4489-o-meter: ${six_seven_ness[1]}/67`;
+	ss_ometer_3.innerHTML = `300763-o-meter: ${six_seven_ness[2]}/67`;
+	if (prestige_unlocked[0]) {
+		prestige_button.style.display = "block";
+	}
+	if (prestige_unlocked[1]) {
+		prestige_button2.style.display = "block";
+	}
+}
+
+ss_button.addEventListener("click", () => {
+	six_seven_ness[0] = Math.min(six_seven_ness[0] + 1, 67);
+	if (six_seven_ness[0] == 67) { 
+		prestige_unlocked[0] = true; 
+		prestige_button.disabled = false; 
+	} else { 
+		prestige_button.disabled = true; 
+	}
+	refresh();
+});
+
+prestige_button.addEventListener("click", () => {
+	if (six_seven_ness[0] < 67) { return; } 
+	prestige_button.disabled = true;
+	ss_ometer_2.style.display = "block";
+	six_seven_ness[1] = Math.min(six_seven_ness[1] + 1, 67);
+	six_seven_ness[0] = 0
+	if (six_seven_ness[1] == 67) { 
+		prestige_unlocked[1] = true; 
+		prestige_button2.disabled = false; 
+	} else { 
+		prestige_button2.disabled = true; 
+	}
+	refresh();
+});
+
+prestige_button2.addEventListener("click", () => {
+	if (six_seven_ness[1] < 67) { return; } 
+	prestige_button2.disabled = true;
+	ss_ometer_3.style.display = "block";
+	six_seven_ness[2] = Math.min(six_seven_ness[2] + 1, 67);
+	six_seven_ness[1] = 0
+	refresh();
+});
+	</script>
+</body>
+</html>
