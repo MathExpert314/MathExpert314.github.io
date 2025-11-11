@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Persnip Cult</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: 'Share Tech Mono', monospace;
+    background: #0b0b0b;
+    color: #eee;
+    transition: background 0.5s, color 0.5s;
+  }
+
+  body.happy {
+    background: #fff;
+    color: #000;
+  }
+
+  h1, h2, .section, .shadow-text, footer {
+    transition: all 0.5s;
+  }
+
+  /* Dark Mode Styles */
+  h1 { font-size: 4em; text-align: center; color: #ff3c3c; text-shadow: 0 0 5px #ff3c3c, 0 0 10px #ff3c3c; margin-top: 50px; }
+  h2 { font-size: 2em; text-align: center; margin-top: 30px; color: #ff3c3c; }
+  .section { max-width: 800px; margin: 50px auto; padding: 20px; background: rgba(10,10,10,0.85); border-left: 3px solid #ff3c3c; border-radius: 5px; line-height: 1.6em; position: relative; overflow: hidden; }
+  .shadow-text { position: absolute; color: rgba(255,60,60,0.05); font-size: 5em; pointer-events: none; user-select: none; }
+  .persnip-img { display: block; max-width: 300px; margin: 30px auto; border: 5px solid #ff3c3c; border-radius: 50%; filter: drop-shadow(0 0 20px #ff3c3c); transition: transform 0.5s, filter 0.5s; }
+  .persnip-img:hover { transform: scale(1.1) rotate(5deg); filter: drop-shadow(0 0 40px #ff0000); }
+  footer { text-align: center; padding: 50px 0; color: #555; font-size: 0.9em; }
+
+  /* Happy Mode Styles */
+  body.happy h1, body.happy h2, body.happy .section, body.happy .shadow-text, body.happy footer, body.happy .persnip-img { display: none; }
+  .zaph-container { display: none; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center; }
+  body.happy .zaph-container { display: flex; }
+  .zaph-img { max-width: 300px; animation: spin 3s linear infinite; margin-bottom: 20px; }
+  .happy-text { font-size: 2em; font-family: 'Share Tech Mono', monospace; color: #2a7f62; }
+
+  @keyframes spin { 100% { transform: rotate(360deg); } }
+
+  #toggleBtn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    background: #ff3c3c;
+    color: #fff;
+    border: none;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 1em;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background 0.5s, color 0.5s;
+  }
+  body.happy #toggleBtn { background: #2a7f62; color: #fff; }
+</style>
+</head>
+<body>
+
+  <!-- Dark Mode Elements -->
+  <div class="shadow-text" style="top:20%; left:5%;">P</div>
+  <div class="shadow-text" style="top:40%; left:80%;">E</div>
+  <div class="shadow-text" style="top:60%; left:20%;">R</div>
+  <div class="shadow-text" style="top:70%; left:50%;">S</div>
+
+  <h1>The Cult of Persnip</h1>
+  <img src="persnip.png" alt="Persnip the Cat" class="persnip-img">
+
+  <div class="section">
+    <h2>Origins</h2>
+    <p>In the dim corners of the internet, <strong>Persnip</strong> was first glimpsed by mortals through the eyes of Zaphire. <span class="reveal" onclick="revealLore(this)">Some see shadows where others see fur...</span></p>
+  </div>
+
+  <div class="section">
+    <h2>The Tenets</h2>
+    <p>
+      1. Persnip observes all.<br>
+      2. Persnip judges in silence.<br>
+      3. No mortal shall speak of what is witnessed without consequence.<br>
+      4. <span class="reveal" onclick="revealLore(this)">The whispers tell of a night that never ends...</span><br>
+      5. Only those who feed Persnip offerings may glimpse eternity.
+    </p>
+  </div>
+
+  <div class="section">
+    <h2>Rituals</h2>
+    <p>Followers gather under the dim glow of their screens. <span class="reveal" onclick="revealLore(this)">Red candles illuminate unseen texts on forbidden forums.</span></p>
+  </div>
+
+  <div class="section">
+    <h2>Hidden Lore</h2>
+    <p>Persnip is more than a feline. <span class="reveal" onclick="revealLore(this)">It is the eternal witness to the void.</span></p>
+  </div>
+
+  <footer>All who enter the domain of Persnip are watched. Proceed with reverence. &copy; 2025 Cult of Persnip</footer>
+
+  <!-- Happy Mode Elements -->
+  <div class="zaph-container">
+    <img src="zaph.png" alt="Zaph spinning" class="zaph-img">
+    <div class="happy-text">mediocore at best</div>
+  </div>
+
+  <button id="toggleBtn">Enter Happy Mode</button>
+
+<script>
+  function revealLore(el) {
+    if(el.dataset.revealed === "true") return;
+    el.textContent = el.textContent + " The cult whispers secrets to those who dare to look closer...";
+    el.dataset.revealed = "true";
+  }
+
+  document.addEventListener('mousemove', e => {
+    document.querySelectorAll('.shadow-text').forEach(el => {
+      el.style.transform = `translate(${e.clientX/50}px, ${e.clientY/50}px) rotate(${e.clientX/100}deg)`;
+    });
+  });
+
+  setInterval(() => {
+    document.querySelectorAll('.section').forEach(sec => {
+      sec.style.opacity = 0.9 + Math.random() * 0.1;
+    });
+  }, 300);
+
+  const btn = document.getElementById('toggleBtn');
+  btn.addEventListener('click', () => {
+    document.body.classList.toggle('happy');
+    btn.textContent = document.body.classList.contains('happy') ? "Return to Dark Mode" : "Enter Happy Mode";
+  });
+</script>
+
+</body>
+</html>
