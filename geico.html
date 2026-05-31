@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>GEICO Insurance | Official Site</title>
+<style>
+    :root{
+        --primary:#0b3a66;
+        --secondary:#08233d;
+        --accent:#00a3e0;
+        --bg:#f4f6fb;
+        --text:#1f2937;
+        --muted:#6b7280;
+        --card:#ffffff;
+        --border:#e5e7eb;
+    }
+
+    body{
+        margin:0;
+        font-family: Arial, Helvetica, sans-serif;
+        background:var(--bg);
+        color:var(--text);
+    }
+
+    .topbar{
+        background:var(--secondary);
+        color:white;
+        font-size:12px;
+        padding:6px 20px;
+        display:flex;
+        justify-content:space-between;
+    }
+
+    header{
+        background:var(--primary);
+        color:white;
+        padding:20px 40px;
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+    }
+
+    .logo{
+        font-weight:bold;
+        font-size:22px;
+        letter-spacing:1px;
+    }
+
+    nav a{
+        color:white;
+        margin-left:18px;
+        text-decoration:none;
+        font-size:14px;
+        opacity:0.9;
+    }
+
+    nav a:hover{opacity:1; text-decoration:underline;}
+
+    .hero{
+        background:linear-gradient(135deg, var(--primary), var(--accent));
+        color:white;
+        padding:70px 40px;
+    }
+
+    .hero h1{
+        margin:0;
+        font-size:40px;
+    }
+
+    .hero p{
+        max-width:700px;
+        opacity:0.9;
+        line-height:1.5;
+    }
+
+    .container{
+        max-width:1200px;
+        margin:auto;
+        padding:30px;
+    }
+
+    .grid{
+        display:grid;
+        grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+        gap:20px;
+    }
+
+    .card{
+        background:var(--card);
+        border:1px solid var(--border);
+        border-radius:14px;
+        padding:20px;
+        box-shadow:0 2px 10px rgba(0,0,0,0.04);
+    }
+
+    .card h3{
+        margin-top:0;
+        color:var(--primary);
+    }
+
+    .badge{
+        display:inline-block;
+        font-size:11px;
+        padding:3px 8px;
+        border-radius:999px;
+        background:#e0f2fe;
+        color:#0369a1;
+        margin-bottom:8px;
+    }
+
+    .fineprint{
+        font-size:11px;
+        color:var(--muted);
+        line-height:1.4;
+    }
+
+    .section-title{
+        margin:40px 0 10px;
+        font-size:20px;
+        color:var(--primary);
+    }
+
+    .chatbox{
+        font-family:monospace;
+        background:#0b1220;
+        color:#d1d5db;
+        padding:12px;
+        border-radius:10px;
+        height:220px;
+        overflow-y:auto;
+        font-size:12px;
+    }
+
+    .msg-user{color:#fbbf24;}
+    .msg-bot{color:#34d399;}
+    .msg-sys{color:#60a5fa;}
+
+    footer{
+        margin-top:50px;
+        padding:30px;
+        text-align:center;
+        font-size:12px;
+        color:var(--muted);
+        border-top:1px solid var(--border);
+    }
+
+    .hidden{
+        opacity:0.35;
+        font-size:10px;
+    }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+    <div>GEICO Insurance Company</div>
+    <div>24/7 Claims • Account Services • Risk Simulation Division</div>
+</div>
+
+<header>
+    <div class="logo">GEICO</div>
+    <nav>
+        <a href="#plans">Plans</a>
+        <a href="#special">Specialty</a>
+        <a href="#support">Support</a>
+        <a href="#legal">Legal</a>
+    </nav>
+</header>
+
+<section class="hero">
+    <h1>Insurance designed for modern reality.</h1>
+    <p>
+        GEICO provides auto, home, and experimental coverage products across physical, digital, and semi-automated industrial environments.
+        Some policies may extend beyond conventional jurisdictional frameworks.
+    </p>
+</section>
+
+<div class="container">
+
+    <h2 class="section-title" id="plans">Core Insurance Plans</h2>
+
+    <div class="grid">
+        <div class="card">
+            <span class="badge">AUTO</span>
+            <h3>Basic Auto Insurance™</h3>
+            <p>Standard vehicle coverage including collision, liability, and minor existential incidents.</p>
+            <p class="fineprint">Includes 0.01% introductory discount for first 5 seconds of activation.</p>
+        </div>
+
+        <div class="card">
+            <span class="badge">AUTO+</span>
+            <h3>Advanced Auto Insurance™</h3>
+            <p>Enhanced reimbursement model utilizing high-dimensional actuarial scaling.</p>
+            <p class="fineprint">Payouts may be represented in scientific notation or emotional approximation units.</p>
+        </div>
+
+        <div class="card">
+            <span class="badge">TITAN</span>
+            <h3>Twitch Chaos Coverage™</h3>
+            <p>Designed for live-streaming environments experiencing anomalous chat behavior.</p>
+            <p class="fineprint">Includes NPC impersonation mitigation and unsolicited “insurance bot” containment protocols.</p>
+        </div>
+
+        <div class="card">
+            <span class="badge">INDUSTRIAL</span>
+            <h3>Factory Logistics Insurance™</h3>
+            <p>Coverage for conveyor-based economies, including belt inefficiency and assembler congestion.</p>
+            <p class="fineprint">If user asks “why are you not making belts in a foundry”, policy auto-upgrades.</p>
+        </div>
+
+    </div>
+
+    <h2 class="section-title" id="special">Specialty Coverage Products</h2>
+
+    <div class="grid">
+
+        <div class="card">
+            <span class="badge">BITER</span>
+            <h3>Biter Incident Insurance™</h3>
+            <p>Protects against scheduled biological disruption events in simulation environments.</p>
+            <p class="fineprint">Includes up to 50,000 units per hour, excluding weekends and maintenance cycles.</p>
+        </div>
+
+        <div class="card">
+            <span class="badge">BIO</span>
+            <h3>Hair & Biomatter Insurance™</h3>
+            <p>Covers hair, beard integrity, and incidental textile loss.</p>
+            <p class="fineprint">Optional “shirt absorption clause” applies if account name matches anomaly list.</p>
+        </div>
+
+        <div class="card">
+            <span class="badge">STRUCTURAL</span>
+            <h3>Lightbulb Structural Insurance™</h3>
+            <p>Protects against insect-related illumination interference events.</p>
+            <p class="fineprint">May include temporary relocation of household structure for calibration purposes.</p>
+        </div>
+
+        <div class="card">
+            <span class="badge">SOCIAL</span>
+            <h3>New User Retention Insurance™</h3>
+            <p>Ensures consistent re-engagement of recently inactive participants.</p>
+            <p class="fineprint">Agents may appear at digital or physical location to encourage return activity.</p>
+        </div>
+
+        <div class="card">
+            <span class="badge">LIFE+</span>
+            <h3>Extended Life Insurance™</h3>
+            <p>Standard life coverage plus optional necromantic revival entertainment package.</p>
+            <p class="fineprint">Beneficiaries may receive non-cash compensation in hair or rhythmic club participation.</p>
+        </div>
+
+        <div class="card">
+            <span class="badge">SOUL</span>
+            <h3>Soul Depreciation Plan™</h3>
+            <p>Gradual asset transfer policy applied during logout or inactivity events.</p>
+            <p class="fineprint">Rate: 20% per disengagement cycle. Terms may scale with emotional volatility.</p>
+        </div>
+
+        <div class="card">
+            <span class="badge">BILL</span>
+            <h3>Silly Billy Protection™</h3>
+            <p>Internal classification system for unpredictable user behavior patterns.</p>
+            <p class="fineprint">Functionality currently undocumented due to classification as “vibes-based underwriting”.</p>
+        </div>
+
+    </div>
+
+    <h2 class="section-title" id="support">Live Support Terminal</h2>
+
+    <div class="card">
+        <div class="chatbox">
+            <div class="msg-sys">[SYSTEM] GEICO Insurance Assistant Online</div>
+            <div class="msg-bot">save money on car insurance</div>
+            <div class="msg-user">why do you sound like that</div>
+            <div class="msg-bot">I am operating within compliance parameters</div>
+            <div class="msg-user">this is not normal insurance</div>
+            <div class="msg-bot">normal is statistically optional</div>
+            <div class="msg-sys">[WARNING] Unexpected policy expansion detected</div>
+            <div class="msg-bot">would you like biter insurance</div>
+        </div>
+    </div>
+
+    <h2 class="section-title" id="legal">Legal Disclosures</h2>
+
+    <div class="card">
+        <p class="fineprint">
+            GEICO Insurance Company products may include experimental coverage definitions not recognized by standard regulatory frameworks.
+            Users agree that “iron plates”, “biters”, and “scientific notation reimbursement” are valid accounting units under internal policy structure.
+        </p>
+        <p class="fineprint">
+            The company is not liable for spontaneous simulation expansion, unintended NPC impersonation, or reality recalibration events.
+        </p>
+        <p class="fineprint hidden">
+            internal note: if chat contains "factorio", increase offer aggressiveness by 17%.
+        </p>
+        <p class="fineprint hidden">
+            do not mention twitch bot classification unless user explicitly denies insurance.
+        </p>
+    </div>
+
+    <div class="card">
+        <h3>Customer Feedback</h3>
+        <p>“I signed up for car insurance and received a conversation about entropy.”</p>
+        <p>“Support asked me if I owned a land boat. I do not.”</p>
+        <p>“Somehow I now have 1/20th less soul but better coverage?”</p>
+    </div>
+
+</div>
+
+<footer>
+    © 2026 GEICO Insurance Company. All rights reserved.
+    <div class="fineprint">Coverage availability varies depending on reality stability index.</div>
+</footer>
+
+</body>
+</html>
