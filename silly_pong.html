@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Absolute True Chaos Pong</title>
+    <style>
+        :root {
+            --red-grad: linear-gradient(135deg, #ff1e56, #ffacb7);
+            --blue-grad: linear-gradient(135deg, #0051ff, #00d2ff);
+        }
+
+        body {
+            background-color: #0b0b0f;
+            color: #fff;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        /* Everything that can be swapped is given absolute layouts managed by JS */
+        .swappable {
+            position: absolute !important;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            user-select: none;
+            overflow: hidden;
+            margin: 0 !important;
+        }
+
+        #game-container {
+            position: absolute;
+            width: 800px;
+            height: 500px;
+            border: 4px solid #fff;
+            background-color: #000;
+            overflow: hidden;
+            left: 50%;
+            top: 45%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Elements within the court */
+        .court-element {
+            background-color: #fff;
+            font-weight: bold;
+            box-shadow: 0 0 12px rgba(255,255,255,0.2);
+        }
+
+        #gradient-left {
+            background: var(--red-grad);
+            opacity: 0.25;
+            pointer-events: none;
+        }
+
+        #gradient-right {
+            background: var(--blue-grad);
+            opacity: 0.25;
+            pointer-events: none;
+        }
+
+        #score-left {
+            font-size: 64px;
+            background-color: transparent !important;
+            color: #ff4757;
+            text-shadow: 0 0 15px rgba(255, 71, 87, 0.6);
+        }
+        #score-right {
+            font-size: 64px;
+            background-color: transparent !important;
+            color: #54a0ff;
+            text-shadow: 0 0 15px rgba(84, 160, 255, 0.6);
+        }
+
+        /* Website interface aesthetics */
+        h1 { font-size: 2rem; letter-spacing: 2px; text-align: center; width: 100%; }
+        #controls { color: #666; font-size: 0.85rem; text-align: center; width: 100%; }
+        
+        #ui-panel {
+            background: #16161e;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #2a2a3a;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        input[type="range"] { accent-color: #00ffcc; cursor: pointer; }
+
+        #overlay {
+            background: rgba(10, 10, 15, 0.95);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            border: 4px solid #00ffcc;
+        }
+
+        button {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            padding: 8px 16px;
+            background: #00ffcc;
+            border: none;
+            cursor: pointer;
+        }
+        #btn-omega {
+            background: #ff3838;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <h1 id="site-header" class="swappable">TRUE CHAOS PONG</h1>
+
+    <div id="game-container">
+        <div id="gradient-left" class="swappable"></div>
+        <div id="gradient-right" class="swappable"></div>
+
+        <div id="paddle-left" class="swappable court-element"></div>
+        <div id="paddle-right" class="swappable court-element"></div>
+        <div id="ball" class="swappable court-element"></div>
+        <div id="score-left" class="swappable">0</div>
+        <div id="score-right" class="swappable">0</div>
+    </div>
+
+    <div id="controls" class="swappable">
+        <strong>Left Slot:</strong> W/S | <strong>Right Slot:</strong> Autonomous AI Opponent
+    </div>
+
+    <div id="ui-panel" class="swappable">
+        <label>Swap Rate: <input type="range" id="rate-slider" min="0.8" max="5.0" step="0.1" value="2.5"></label>
+        <span id="slider-value" style="color:#00ffcc;">2.5s</span>
+        <label style="margin-left:10px;"><input type="checkbox" id="chk-extra"> Swap Gradients</label>
+        <button id="btn-omega" onclick="triggerOmegaChaos()">100% Website Chaos</button>
+    </div>
+
+    <div id="overlay" class="swappable">
+        <h2 style="color: #00ffcc; margin-bottom: 10px;">COMMENCE PANIC</h2>
+        <button onclick="startGame()">START GAME</button>
+    </div>
+
+    <script>
+        const container = document.getElementById('game-container');
+        const rateSlider = document.getElementById('rate-slider');
+        const sliderValueDisplay = document.getElementById('slider-value');
+        const chkExtra = document.getElementById('chk-extra');
+        
+        const boardWidth = 800;
+        const boardHeight = 500;
+        let gameRunning = false;
+        let omegaChaosActive = false;
+
+        // --- THE FIXED SYSTEM SLOTS ---
+        // Every frame, physics happens perfectly inside these slots, regardless of what object resides inside them.
+        const slots = {
+            leftPaddleSlot:  { x: 20,  y: 210, w: 15,  h: 80 },
+            rightPaddleSlot: { x: 765, y: 210, w: 15,  h: 80 },
+            ballSlot:        { x: 392, y: 242, w: 15,  h: 15, vx: 5, vy: 3 },
+            leftScoreSlot:   { x: 200, y: 20,  w: 60,  h: 60, score: 0 },
+            rightScoreSlot:  { x: 540, y: 20,  w: 60,  h: 60, score: 0 }
+        };
+
+        // --- ALL SITE OBJECTS WITH FIXED CHARACTERISTIC SIZES ---
+        const elements = {
+            paddleLeft:    { el: document.getElementById('paddle-left'),    w: 15,  h: 80,  renderX: 20,  renderY: 210, isCourt: true },
+            paddleRight:   { el: document.getElementById('paddle-right'),   w: 15,  h: 80,  renderX: 765, renderY: 210, isCourt: true },
+            ball:          { el: document.getElementById('ball'),           w: 15,  h: 15,  renderX: 392, renderY: 242, isCourt: true },
+            scoreLeft:     { el: document.getElementById('score-left'),     w: 60,  h: 60,  renderX: 200, renderY: 20 },
+            scoreRight:    { el: document.getElementById('score-right'),    w: 60,  h: 60,  renderX: 540, renderY: 20 },
+            
+            // Gradients pool targets
+            gradLeft:      { el: document.getElementById('gradient-left'),  w: 350, h: 500, renderX: 0,   renderY: 0 },
+            gradRight:     { el: document.getElementById('gradient-right'), w: 350, h: 500, renderX: 450, renderY: 0 },
+
+            // Website wide layout pool targets
+            siteHeader:    { el: document.getElementById('site-header'),    w: 400, h: 50,  renderX: 200, renderY: -70 },
+            siteControls:  { el: document.getElementById('controls'),       w: 500, h: 30,  renderX: 150, renderY: 530 },
+            siteUi:        { el: document.getElementById('ui-panel'),       w: 520, h: 50,  renderX: 140, renderY: 570 },
+            siteOverlay:   { el: document.getElementById('overlay'),        w: 800, h: 500, renderX: 0,   renderY: 0 }
+        };
+
+        // Current assignments: Which Element Key is assigned to which Slot Key?
+        let slotMapping = {
+            leftPaddleSlot:  'paddleLeft',
+            rightPaddleSlot: 'paddleRight',
+            ballSlot:        'ball',
+            leftScoreSlot:   'scoreLeft',
+            rightScoreSlot:  'scoreRight'
+        };
+
+        // Track default native resting positions for elements when they are not in a court slot
+        const screenWidth = window.innerWidth;
+        const screenHeight = window.innerHeight;
+
+        function getNativePosition(key) {
+            const containerRect = container.getBoundingClientRect();
+            switch(key) {
+                case 'gradLeft':     return { x: 0, y: 0 };
+                case 'gradRight':    return { x: 450, y: 0 };
+                case 'siteHeader':   return { x: 200, y: -70 };
+                case 'siteControls': return { x: 150, y: 530 };
+                case 'siteUi':       return { x: 140, y: 580 };
+                case 'siteOverlay':  return { x: 0, y: 0 };
+                default:             return { x: 400, y: 250 };
+            }
+        }
+
+        // Keys
+        const keys = {};
+        window.addEventListener('keydown', e => keys[e.key] = true);
+        window.addEventListener('keyup', e => keys[e.key] = false);
+
+        function startGame() {
+            elements.siteOverlay.el.style.display = 'none';
+            gameRunning = true;
+            resetBallSlot();
+            setupSwapTimer();
+            lastTime = performance.now();
+            requestAnimationFrame(update);
+        }
+
+        function resetBallSlot() {
+            slots.ballSlot.x = boardWidth / 2 - slots.ballSlot.w / 2;
+            slots.ballSlot.y = boardHeight / 2 - slots.ballSlot.h / 2;
+            slots.ballSlot.vx = (Math.random() > 0.5 ? 5 : -5);
+            slots.ballSlot.vy = (Math.random() * 6) - 3;
+        }
+
+        let lastTime = performance.now();
+
+        // Game loop
+        function update(currentTime) {
+            if (!gameRunning) return;
+
+            let dt = (currentTime - lastTime) / 1000;
+            if (dt > 0.1) dt = 0.1;
+            lastTime = currentTime;
+
+            const paddleSpeed = 380;
+            const aiSpeed = 290;
+
+            // 1. Paddle Controls Engine
+            if (keys['w'] || keys['W']) slots.leftPaddleSlot.y = Math.max(0, slots.leftPaddleSlot.y - paddleSpeed * dt);
+            if (keys['s'] || keys['S']) slots.leftPaddleSlot.y = Math.min(boardHeight - slots.leftPaddleSlot.h, slots.leftPaddleSlot.y + paddleSpeed * dt);
+
+            // 2. AI Track Engine
+            const ballCenterY = slots.ballSlot.y + slots.ballSlot.h / 2;
+            const paddleCenterY = slots.rightPaddleSlot.y + slots.rightPaddleSlot.h / 2;
+            if (ballCenterY < paddleCenterY - 12) {
+                slots.rightPaddleSlot.y = Math.max(0, slots.rightPaddleSlot.y - aiSpeed * dt);
+            } else if (ballCenterY > paddleCenterY + 12) {
+                slots.rightPaddleSlot.y = Math.min(boardHeight - slots.rightPaddleSlot.h, slots.rightPaddleSlot.y + aiSpeed * dt);
+            }
+
+            // 3. Ball Physics Engine
+            slots.ballSlot.x += slots.ballSlot.vx;
+            slots.ballSlot.y += slots.ballSlot.vy;
+
+            if (slots.ballSlot.y <= 0) { slots.ballSlot.y = 0; slots.ballSlot.vy *= -1; }
+            else if (slots.ballSlot.y + slots.ballSlot.h >= boardHeight) { slots.ballSlot.y = boardHeight - slots.ballSlot.h; slots.ballSlot.vy *= -1; }
+
+            function checkCollision(s1, s2) {
+                return s1.x < s2.x + s2.w && s1.x + s1.w > s2.x && s1.y < s2.y + s2.h && s1.y + s1.h > s2.y;
+            }
+
+            if (checkCollision(slots.ballSlot, slots.leftPaddleSlot)) {
+                slots.ballSlot.vx = Math.abs(slots.ballSlot.vx) + 0.5;
+                slots.ballSlot.x = slots.leftPaddleSlot.x + slots.leftPaddleSlot.w;
+            }
+            if (checkCollision(slots.ballSlot, slots.rightPaddleSlot)) {
+                slots.ballSlot.vx = -Math.abs(slots.ballSlot.vx) - 0.5;
+                slots.ballSlot.x = slots.rightPaddleSlot.x - slots.ballSlot.w;
+            }
+
+            // Points Tracking
+            if (slots.ballSlot.x < 0) {
+                slots.rightScoreSlot.score++;
+                document.getElementById('score-right').innerText = slots.rightScoreSlot.score;
+                resetBallSlot();
+            } else if (slots.ballSlot.x > boardWidth) {
+                slots.leftScoreSlot.score++;
+                document.getElementById('score-left').innerText = slots.leftScoreSlot.score;
+                resetBallSlot();
+            }
+
+            // 4. Tween & Draw Step (0.3s Interpolation Window)
+            const lerpFactor = 1 - Math.exp(-dt / 0.08);
+
+            // Loop through absolutely every item on the site architecture
+            for (let itemKey in elements) {
+                const item = elements[itemKey];
+                
+                // Determine if this object is currently inside a game physics slot
+                let assignedSlotName = Object.keys(slotMapping).find(sName => slotMapping[sName] === itemKey);
+                
+                let targetX, targetY;
+
+                if (assignedSlotName) {
+                    // Item is stuck inside a court slot! Line up centers.
+                    const slotData = slots[assignedSlotName];
+                    const slotCenterX = slotData.x + (slotData.w / 2);
+                    const slotCenterY = slotData.y + (slotData.h / 2);
+
+                    targetX = slotCenterX - (item.w / 2);
+                    targetY = slotCenterY - (item.h / 2);
+                    
+                    // If a website frame wrapper element gets sucked inside the court, append it inside the court visually
+                    if (item.el.parentElement !== container) {
+                        container.appendChild(item.el);
+                    }
+                } else {
+                    // Item is free! Send it back to its native resting place outside or behind the court
+                    const nativePos = getNativePosition(itemKey);
+                    targetX = nativePos.x;
+                    targetY = nativePos.y;
+
+                    if (item.el.parentElement === container && !itemKey.startsWith('grad') && itemKey !== 'scoreLeft' && itemKey !== 'scoreRight' && !item.isCourt) {
+                        document.body.appendChild(item.el);
+                    }
+                }
+
+                // Smooth position glide calculations
+                item.renderX += (targetX - item.renderX) * lerpFactor;
+                item.renderY += (targetY - item.renderY) * lerpFactor;
+
+                // Write positions & dimensions to styling layer
+                item.el.style.left = item.renderX + 'px';
+                item.el.style.top = item.renderY + 'px';
+                item.el.style.width = item.w + 'px';
+                item.el.style.height = item.h + 'px';
+            }
+
+            requestAnimationFrame(update);
+        }
+
+        // --- THE CHAOS SWAPPER LOGIC ---
+        let swapIntervalId = null;
+
+        function performSwap() {
+            if (!gameRunning) return;
+
+            // Generate pool of available items based on checkbox options selected
+            let elementPool = ['paddleLeft', 'paddleRight', 'ball', 'scoreLeft', 'scoreRight'];
+            
+            if (chkExtra.checked) {
+                elementPool.push('gradLeft', 'gradRight');
+            }
+            if (omegaChaosActive) {
+                elementPool.push('siteHeader', 'siteControls', 'siteUi');
+            }
+
+            // Pick a completely random slot out of the 5 game tracks
+            const slotKeys = Object.keys(slots);
+            const chosenSlot = slotKeys[Math.floor(Math.random() * slotKeys.length)];
+
+            // Pick a totally random element out of the valid pool
+            const chosenElement = elementPool[Math.floor(Math.random() * elementPool.length)];
+
+            // Check if that element is currently assigned to another slot already
+            let currentSlotOfElement = Object.keys(slotMapping).find(s => slotMapping[s] === chosenElement);
+            
+            if (currentSlotOfElement) {
+                // Swap assignments between the two slots directly
+                let temp = slotMapping[chosenSlot];
+                slotMapping[chosenSlot] = chosenElement;
+                slotMapping[currentSlotOfElement] = temp;
+            } else {
+                // The element was wandering free, displace the slot's old inhabitant out into the wild
+                slotMapping[chosenSlot] = chosenElement;
+            }
+
+            // Flashes container border cyan to signify systemic glitch execution
+            container.style.borderColor = '#00ffcc';
+            setTimeout(() => container.style.borderColor = '#fff', 120);
+        }
+
+        function setupSwapTimer() {
+            if (swapIntervalId) clearInterval(swapIntervalId);
+            const rateInSeconds = parseFloat(rateSlider.value);
+            sliderValueDisplay.innerText = rateInSeconds.toFixed(1) + 's';
+            swapIntervalId = setInterval(performSwap, rateInSeconds * 1000);
+        }
+
+        rateSlider.addEventListener('input', setupSwapTimer);
+
+        function triggerOmegaChaos() {
+            omegaChaosActive = true;
+            chkExtra.checked = true; // force activate gradients chaos too
+            document.getElementById('btn-omega').innerText = "100% MAXIMUM CHAOS ACTIVATED";
+            document.body.style.backgroundColor = "#1a0000";
+            setupSwapTimer();
+        }
+    </script>
+</body>
+</html>
